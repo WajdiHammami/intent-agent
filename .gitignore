@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# Model files (large binaries — download separately)
+models/
+
+# Generated eval outputs
+eval/transcripts.json
+eval/results_full.json
+eval/results_full_old.json
+eval/generated_samples.py
+eval/generated_samples.json
+
+# OS
+.DS_Store
+Thumbs.db
