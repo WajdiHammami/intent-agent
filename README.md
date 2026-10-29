@@ -41,10 +41,6 @@ data extraction.
 - **Clean, dependency-light code.** One LLM wrapper, one graph module, one
   orchestrator. No framework lock-in, no hidden state.
 
-**Skills on display:** LLM application engineering · retrieval/knowledge-graph
-reasoning · prompt and output-schema design · evaluation & benchmark design ·
-ablation methodology · clean Python architecture · reproducible research tooling.
-
 ---
 
 ## How it works
@@ -235,5 +231,4 @@ Polytechnique Montreal, as the reference implementation for the paper *"Knowledg
 Guided LLM for Intent-Driven Service Orchestration in Integrated Terrestrial and
 Non-Terrestrial 6G Networks"* (Hammami, Azam, Cherkaoui).
 
-Open to related work — LLM application engineering, agentic pipelines, and
-retrieval/knowledge-graph systems. Released under the [MIT License](LICENSE).
+Released under the [MIT License](LICENSE).
