@@ -186,8 +186,8 @@ def run_intent(
 
 _BANNER = f"""
 {_BOLD}╔══════════════════════════════════════════════════════════════════╗
-║  6G Intent → Service Profile Framework          (TMP 3.0)       ║
-║  Knowledge-Guided LLM · Integrated TN/NTN Orchestration         ║
+║  6G Intent → Service Profile Framework       Intent Agent        ║
+║  Knowledge-Guided LLM · Integrated TN/NTN Orchestration          ║
 ╚══════════════════════════════════════════════════════════════════╝{_RESET}
 
 Describe your 6G service requirement in plain English.

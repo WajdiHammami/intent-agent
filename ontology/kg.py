@@ -1,9 +1,9 @@
 """
-TMP 3.0 — KGOntology
+KGOntology
 
-Typed query interface over the TMP 3.0 Knowledge Graph.
+Typed query interface over the knowledge graph.
 
-TMP 3.0 changes vs TMP 2.0:
+Design notes:
   1. _UNIVERSAL_REQUIRES adds deployment_scenario (Urban/RuralRemote/Disaster/Maritime)
      encoding the four TN/NTN evaluation scenarios (paper Table 1).
   2. geographic_scope enum extended to cover RemoteConnectivity values.
@@ -188,7 +188,7 @@ def _evaluate_condition(
 
 class KGOntology:
     """
-    Typed query interface over the TMP 3.0 Knowledge Graph.
+    Typed query interface over the knowledge graph.
 
     Usage:
         from ontology.ontology_v3 import ALL_CLASSES

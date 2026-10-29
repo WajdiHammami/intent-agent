@@ -1,5 +1,5 @@
 """
-TMP 3.0 — LLM Client
+LLM Client
 
 Four focused LLM calls used by the dialogue runner:
   1. classify_intent    — soft-classify intent into one of the 4 service classes

@@ -1,5 +1,5 @@
 """
-TMP 3.0 — Ontology v3
+Ontology v3
 
 4 ServiceClassNode instances with complete KG edges, plus the four deployment
 scenario nodes and three deployment-mode profiles derived from the paper tables.
@@ -19,7 +19,7 @@ Group taxonomy:
 
 KPI values grounded in:
     TS 22.104, TS 22.261, TS 22.179, TS 22.280, TR 38.821,
-    ITU-R M.2083, ITU-R M.2410  — see docs/KG_TMP_3.0.md §3
+    ITU-R M.2083, ITU-R M.2410  — see the standards cited below
 
 Universal slots (deployment_scenario, geographic_scope, isolation_level,
 cost_profile) are injected by KGOntology as base requirements for every class.

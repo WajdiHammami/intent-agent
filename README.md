@@ -1,300 +1,239 @@
-# 6G Intent-to-Service-Profile Framework (TMP 3.0)
+# Intent Agent — Knowledge-Guided LLM for Intent-Driven Service Orchestration
 
-A knowledge-guided LLM framework that converts natural-language 6G service
-intents into validated, orchestration-ready service profiles for integrated
-Terrestrial/Non-Terrestrial (TN/NTN) network deployments.
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
+![LLM](https://img.shields.io/badge/LLM-Llama--3--8B%20(llama.cpp)-000000)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Status](https://img.shields.io/badge/Status-Research%20prototype-blue)
+
+Turn a messy, plain-English service request into a **validated, machine-ready
+configuration** — without trusting the language model to get the hard decisions
+right.
+
+An LLM is great at *reading* an informal request ("we need real-time control for
+60 welding robots on one factory floor, premium budget"). It is unreliable at
+*deciding* whether that request is complete, self-consistent, and policy-valid.
+This project keeps the LLM on language tasks and hands every decision to a small,
+auditable **knowledge graph**. The payoff, measured on a labeled benchmark:
+**+20 points of policy validity and +35 points of contradiction detection versus
+an LLM-only pipeline, while asking 3.8× fewer clarifying questions.**
+
+It's the reference implementation behind a research paper on 6G network
+orchestration, but the pattern — *LLM for understanding, symbolic layer for
+decisions* — applies to any domain where an agent's output has to be correct, not
+just plausible: form intake, config generation, compliance checks, structured
+data extraction.
+
+---
+
+## Why this is worth a look
+
+- **A hybrid architecture that actually earns its keep.** The split between LLM
+  and knowledge graph isn't decorative — the ablation study quantifies exactly
+  what the symbolic layer buys you (see Results).
+- **Deterministic where it counts.** Completeness checks, conflict detection, and
+  termination are pure-Python rules over a typed graph. The same input always
+  produces the same decision, and every decision is traceable to a rule.
+- **A real evaluation harness, not a demo.** 8 metrics, a 72-sample labeled
+  dataset, per-class and per-request-type breakdowns, a component ablation, and a
+  "how much does knowledge coverage matter" sweep — all runnable from the CLI.
+- **Runs on a single consumer GPU.** 4-bit quantized Llama-3-8B via llama.cpp,
+  ~6 GB VRAM. A swappable Claude-API backend is included for higher accuracy.
+- **Clean, dependency-light code.** One LLM wrapper, one graph module, one
+  orchestrator. No framework lock-in, no hidden state.
+
+**Skills on display:** LLM application engineering · retrieval/knowledge-graph
+reasoning · prompt and output-schema design · evaluation & benchmark design ·
+ablation methodology · clean Python architecture · reproducible research tooling.
 
 ---
 
 ## How it works
 
 ```
-Natural-language intent
+Natural-language request
         │
         ▼
-┌───────────────────┐
-│  S1 · Classify    │  Which of the 4 service classes? (TC / MC / RC / MaC)
-├───────────────────┤
-│  S2 · Extract     │  Pull slot values directly from the intent text (LLM)
-├───────────────────┤
-│  S3 · Clarify     │  Ask only what is missing or conflicting (KG-driven)
-├───────────────────┤
-│  S5 · Assemble    │  Build the structured service profile (LLM)
-├───────────────────┤
-│  S6 · Deploy mode │  Assign TN/NTN deployment mode from the knowledge base
-└───────────────────┘
+┌─────────────────────┐
+│  S1 · Classify      │   LLM — pick 1 of 4 service classes (a soft guess the
+│                     │         graph can later revise or escalate)
+├─────────────────────┤
+│  S2 · Extract       │   LLM — pull whatever slot values the text already gives
+├─────────────────────┤
+│  S3 · Clarify loop  │   GRAPH — ask only for what's missing, conflicting, or
+│                     │           class-ambiguous; the LLM just parses answers
+├─────────────────────┤
+│  S5 · Assemble      │   Build the structured profile
+├─────────────────────┤
+│  S6 · Deploy mode   │   GRAPH — assign TN-only / NTN-only / Hybrid from context
+└─────────────────────┘
         │
         ▼
-  Validated JSON service profile
+  Validated JSON profile
 ```
 
-**Service classes**
+| Does the *language* | Does the *thinking* |
+|---|---|
+| Classify intent, extract fields from free text, parse typed values from user answers | Which fields are mandatory, which combinations are contradictory, when to stop asking, which deployment mode fits |
+| `pipeline/llm_client.py` | `ontology/` (the knowledge graph) |
 
-| ID  | Full name             | Primary objective                          |
-|-----|-----------------------|--------------------------------------------|
-| TC  | TimeCritical          | Sub-ms latency, industrial/vehicular control |
-| MC  | MissionCritical       | Resilience-first, public safety, fallback  |
-| RC  | RemoteConnectivity    | NTN-primary, maritime/rural/aerial reach   |
-| MaC | MassiveConnectivity   | Millions of low-power IoT devices          |
+The LLM runs at temperature 0 and is asked for JSON; a tolerant parser recovers
+from formatting drift. Because the **graph** — not the model — rules on
+completeness and consistency, conflict detection is deterministic and the final
+profile always satisfies the service ontology.
+
+<details>
+<summary><b>Concrete example of graph-driven conflict detection</b></summary>
+
+> *"Sub-millisecond V2X platooning for highway trucks — and use the cheapest 5G
+> plan available."*
+
+The LLM extracts `priority=Critical` and `cost_profile=LowCost`. The graph holds
+a `conflict_rule(Critical, LowCost)`, so instead of silently emitting an
+impossible profile, the pipeline flags the contradiction and asks the user to
+resolve it. An LLM-only pipeline, asked to self-check, misses this most of the
+time — which is exactly what the Pure-LLM ablation below measures.
+
+</details>
 
 ---
 
-## Requirements
+## Results
 
-- Python 3.10 or later
-- A GPU with at least 6 GB VRAM (recommended) or CPU-only (slower)
-- The model file: `Meta-Llama-3-8B-Instruct.Q4_K_M.gguf`
+Full pipeline over the 72-sample labeled benchmark (18 per class),
+Llama-3-8B-Instruct Q4_K_M, **zero-shot — no fine-tuning**:
+
+| Metric | Overall | TC | MC | RC | MaC |
+|---|:--:|:--:|:--:|:--:|:--:|
+| Classification accuracy      | **90.3%** | 100% | 94.4% | 100% | 66.7% |
+| Policy validity rate         | **95.8%** | 83.3% | 100% | 100% | 100% |
+| Avg. clarification turns     | **0.57**  | 0.83 | 0.17 | 0.50 | 0.78 |
+| Profile completeness         | 99.3% | | | | |
+| Contradiction detection acc. | 83.3% | | | | |
+
+**The knowledge graph vs. an LLM-only baseline** — same classifier and extractor,
+but the graph's reasoning replaced by the LLM deciding completeness and conflicts
+from its own knowledge (40-sample contradictory subset):
+
+| | Policy validity | Contradiction detection | Clarifying questions |
+|---|:--:|:--:|:--:|
+| LLM-only            | baseline     | baseline      | baseline |
+| **+ Knowledge graph** | **+20 pts** | **+35 pts**   | **3.8× fewer** |
+
+The graph doesn't help the model *classify* better — it makes the downstream
+decisions **reliable and cheap**. That's the whole thesis, and it's measured, not
+asserted.
+
+Reproduce: `python run_eval.py` and `python run_pure_llm.py --contradictory-only`.
 
 ---
 
-## Installation
+## Tech stack
 
-**1. Create and activate a virtual environment**
+| | |
+|---|---|
+| **Language** | Python 3.10+ (standard library + dataclasses; no heavy framework) |
+| **Inference** | [`llama-cpp-python`](https://github.com/abetlen/llama-cpp-python) running Llama-3-8B-Instruct (Q4_K_M, 4-bit) locally; optional Anthropic Claude backend |
+| **Knowledge layer** | Hand-authored typed graph — required/conditional slots, conflict rules, class escalation, deployment-mode recommendations |
+| **Evaluation** | Custom harness: 8 metrics, LLM-simulated user for multi-turn dialogue, ablation + coverage-sweep runners |
+
+---
+
+## Quickstart
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate        # Linux / macOS
-# .venv\Scripts\activate         # Windows
-```
-
-**2. Install dependencies**
-
-```bash
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-```
 
-For GPU acceleration (CUDA):
-
-```bash
-CMAKE_ARGS="-DGGML_CUDA=on" pip install llama-cpp-python --force-reinstall
-```
-
-**3. Place the model file**
-
-Create a `models/` folder inside the export directory and put the GGUF file there:
-
-```
-export/
-└── models/
-    └── Meta-Llama-3-8B-Instruct.Q4_K_M.gguf
-```
-
-You can download the model from Hugging Face:
-
-```
-https://huggingface.co/bartowski/Meta-Llama-3-8B-Instruct-GGUF
-```
-
-Or if the model is already available on your machine, pass its path with `--model`.
-
----
-
-## Running the interactive demo
-
-```bash
+# Place the model under models/ (git-ignored), then:
 python run_interactive.py
 ```
 
-With a custom model path:
+Model: `Meta-Llama-3-8B-Instruct.Q4_K_M.gguf` from
+[bartowski/Meta-Llama-3-8B-Instruct-GGUF](https://huggingface.co/bartowski/Meta-Llama-3-8B-Instruct-GGUF),
+or point any script at an existing file with `--model /path/to/model.gguf`.
+For CUDA: `CMAKE_ARGS="-DGGML_CUDA=on" pip install llama-cpp-python --force-reinstall`.
+
+**Interactive demo**
 
 ```bash
-python run_interactive.py --model /path/to/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf
+python run_interactive.py --verbose          # show each stage's decisions
 ```
 
-Save the output JSON to a file:
+**Reproduce the experiments**
 
 ```bash
-python run_interactive.py --output my_profile.json
+python run_eval.py                            # main 72-sample evaluation
+python run_pure_llm.py --contradictory-only   # knowledge graph vs. LLM-only
+python run_ablation.py                        # turn components on/off
+python run_kg_sweep.py --fractions 0 25 50 75 100   # does graph coverage matter?
 ```
 
-Print stage-level debug messages:
+**Grow the dataset** (LLM proposes variants; labels are flagged for human review)
 
 ```bash
-python run_interactive.py --verbose
-```
-
----
-
-## Running the batch evaluation
-
-Runs the full pipeline over the 43-sample labeled dataset and writes two output
-files to `eval/`:
-
-```bash
-python run_eval.py
-```
-
-Filter by service class, request type, or specific IDs:
-
-```bash
-python run_eval.py --class TC                    # only TimeCritical samples
-python run_eval.py --type contradictory          # only contradictory samples
-python run_eval.py --ids TC-01 MC-03             # specific samples
-python run_eval.py --verbose                     # print dialogue turns
-python run_eval.py --compare                     # diff vs previous results
-```
-
-**Output files**
-
-| File | Description |
-|---|---|
-| `eval/transcripts.json` | Per-sample dialogue turns + all M1–M8 metric values |
-| `eval/results_full.json` | Aggregate statistics + per-sample metric summary |
-
----
-
-## Generating new dataset samples
-
-Uses the LLM to generate paraphrases, ambiguous variants, or contradictory
-variants from the existing seed intents:
-
-```bash
-python generate_dataset.py --dry-run             # preview without LLM calls
-python generate_dataset.py                       # all seeds, 2 variants each
 python generate_dataset.py --class TC --type paraphrased --n 3
-python generate_dataset.py --ids TC-01 MC-02 --type contradictory
-```
-
-**Output files** (written to `eval/`)
-
-| File | Description |
-|---|---|
-| `eval/generated_samples.py` | Python source, appendable to `dataset.py` after review |
-| `eval/generated_samples.json` | Same samples in JSON for easy inspection |
-
-> **Note:** Fields marked `# REVIEW` in the Python output (`expected_slots`,
-> `expected_conflicts`) need manual verification before the samples are added
-> to the labeled dataset. The LLM does not guarantee correct ground-truth labels.
-
----
-
-## Example session
-
-```
-  Your intent: We need real-time remote surgery support over a satellite link
-               for a hospital ship in the Pacific.
-
-──────────────────────────────────────────────────────────────────
-  Stage 1 · Intent Classification
-──────────────────────────────────────────────────────────────────
-  Detected class:  MissionCritical
-
-──────────────────────────────────────────────────────────────────
-  Stage 2 · Slot Extraction from Intent Text
-──────────────────────────────────────────────────────────────────
-  ✓  vertical_domain = Healthcare  [extracted]
-  ✓  geographic_scope = Maritime   [extracted]
-  ✓  deployment_scenario = Maritime [extracted]
-
-  Still needed: ['isolation_level', 'priority_level', 'cost_profile',
-                 'fallback_mode', 'ntn_tier']
-
-──────────────────────────────────────────────────────────────────
-  Stage 3 · Clarification Dialogue
-──────────────────────────────────────────────────────────────────
-
-  ?  What level of network isolation do you need?
-     Options: Dedicated, Shared, BestEffort
-  > Dedicated
-
-  ?  What is the service priority level?
-     Options: Critical, High, Medium, Low
-  > Critical
-
-  ...
-
-──────────────────────────────────────────────────────────────────
-  Output · Orchestration-Ready Service Profile
-──────────────────────────────────────────────────────────────────
-{
-  "service_class": "MissionCritical",
-  "vertical_domain": "Healthcare",
-  "kpi_profile": { "latency_ms": 10, "reliability": 0.99999, ... },
-  "traffic_pattern": "BurstyRealtime",
-  "geographic_scope": "Maritime",
-  "isolation_level": "Dedicated",
-  "priority_level": "Critical",
-  "cost_profile": "Premium",
-  "deployment_mode": "NTN-only",
-  "class_slots": { ... }
-}
 ```
 
 ---
 
-## Directory structure
+## Dataset & evaluation design
+
+`eval/dataset.py` is one self-contained module — no external data files:
+
+| Collection | Size | Purpose |
+|---|:--:|---|
+| `ALL_SAMPLES` | 72 | Main set — 18 per class (9 seed, 3 paraphrased, 3 ambiguous, 3 contradictory) |
+| `CONTRADICTORY_SUBSET` | 40 | Every conflict-rule type — drives the ablation & coverage sweep |
+| `NON_CONTRADICTORY` | 60 | The well-formed samples inside `ALL_SAMPLES` |
+
+Every sample carries a ground-truth class, an expected slot subset, and (for
+contradictory samples) the conflict that *should* be caught. **Labels are
+hand-authored and verified against the ontology — never taken from LLM output.**
+The LLM stages run zero-shot, so there's no train/test split to worry about.
+Multi-turn dialogue is evaluated with an LLM standing in as the user, driven by a
+per-sample scenario script.
+
+---
+
+## Project structure
 
 ```
-export/
-├── run_interactive.py      Interactive demo — real user dialogue in the terminal
-├── run_eval.py             Batch evaluation — runs all 43 labeled samples
-├── generate_dataset.py     Dataset generator — LLM-assisted sample creation
-├── requirements.txt        Python dependencies
-├── README.md               This file
-│
-├── models/                 Put your GGUF model file here
-│   └── Meta-Llama-3-8B-Instruct.Q4_K_M.gguf
-│
-├── eval/
-│   ├── dataset.py          43 labeled EvalSample definitions (seed through contradictory)
-│   ├── metrics.py          Metric computation: M1–M8, SampleResult, AggregateMetrics
-│   ├── transcripts.json    (generated) Per-sample dialogue + metrics
-│   └── results_full.json   (generated) Aggregate + per-sample summary
+.
+├── run_interactive.py     Interactive terminal demo
+├── run_eval.py            Main 72-sample evaluation
+├── run_pure_llm.py        Ablation: knowledge graph replaced by the LLM
+├── run_ablation.py        Component ablation (extraction / conflict checking)
+├── run_kg_sweep.py        Conflict-rule coverage sweep
+├── generate_dataset.py    LLM-assisted, human-reviewed dataset expansion
 │
 ├── pipeline/
-│   ├── models.py           Data structures: ServiceIntent, DialogueState, SlotValue, ...
-│   ├── llm_client.py       LLM wrapper: classify_intent, extract_slots, parse_answer
-│   └── dialogue_runner.py  Pipeline orchestrator: Stages 1–6
+│   ├── models.py          ServiceIntent, DialogueState, SlotValue, …
+│   ├── llm_client.py      LLM wrapper — local llama.cpp or Claude API
+│   └── dialogue_runner.py Stage orchestration + clarification dialogue
 │
-└── ontology/
-    ├── types.py             KPI types and slot definition dataclasses
-    ├── ontology_v3.py       Service-class ontology: slots, constraints, conflict rules
-    └── kg.py                Knowledge graph: conflict checking, termination, deployment mode
+├── ontology/
+│   ├── types.py           Graph edge-type dataclasses, numeric KPI profiles
+│   ├── ontology_v3.py     The four service classes, scenarios, deploy modes
+│   └── kg.py              Typed graph queries: conflicts, termination, mode
+│
+└── eval/
+    ├── dataset.py         Labeled samples + the three collections above
+    └── metrics.py         The 8 metrics and aggregation
 ```
+
+Four service classes model the span of 6G traffic: **TimeCritical** (sub-ms
+industrial control), **MissionCritical** (resilient public-safety with fallback),
+**RemoteConnectivity** (satellite/rural reach), and **MassiveConnectivity**
+(millions of low-power IoT devices).
 
 ---
 
-## Output format
+## About
 
-The framework outputs a JSON object with the following top-level fields:
+Built by **Wajdi Hammami** ([@WajdiHammami](https://github.com/WajdiHammami)),
+Polytechnique Montreal, as the reference implementation for the paper *"Knowledge-
+Guided LLM for Intent-Driven Service Orchestration in Integrated Terrestrial and
+Non-Terrestrial 6G Networks"* (Hammami, Azam, Cherkaoui).
 
-| Field | Description |
-|---|---|
-| `service_class` | Resolved class: `TimeCritical`, `MissionCritical`, `RemoteConnectivity`, or `MassiveConnectivity` |
-| `vertical_domain` | Industry vertical (e.g. `Healthcare`, `Energy`, `Maritime`) |
-| `kpi_profile` | KPI envelope: latency, reliability, availability, throughput, density |
-| `traffic_pattern` | Traffic model (e.g. `DeterministicPeriodic`, `BurstyRealtime`) |
-| `geographic_scope` | Coverage scope (e.g. `Campus`, `Urban`, `Maritime`) |
-| `isolation_level` | `Dedicated`, `Shared`, or `BestEffort` |
-| `priority_level` | `Critical`, `High`, `Medium`, or `Low` |
-| `cost_profile` | `Economy`, `Standard`, or `Premium` |
-| `deployment_mode` | TN/NTN mode assigned by the knowledge base: `TN-only`, `NTN-only`, or `Hybrid` |
-| `class_slots` | All class-specific elicited parameters (cycle time, fallback mode, NTN tier, etc.) |
-
----
-
-## Troubleshooting
-
-**`llama_cpp` not found**
-Make sure you installed inside the virtualenv:
-```bash
-pip install llama-cpp-python
-```
-
-**Model loads but inference is very slow**
-The model is running on CPU. Install the CUDA build:
-```bash
-CMAKE_ARGS="-DGGML_CUDA=on" pip install llama-cpp-python --force-reinstall
-```
-
-**`Model file not found` error**
-Pass the full path explicitly:
-```bash
-python run_interactive.py --model /full/path/to/model.gguf
-```
-
-**Classification returns wrong class**
-Try rephrasing the intent with more specific technical keywords
-(e.g. "latency-critical" for TC, "fallback required" for MC,
-"satellite" for RC, "smart meters" for MaC).
-
+Open to related work — LLM application engineering, agentic pipelines, and
+retrieval/knowledge-graph systems. Released under the [MIT License](LICENSE).
