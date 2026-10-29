@@ -1,9 +1,9 @@
 """
-TMP 3.0 — KG Edge Type Definitions
+KG Edge Type Definitions
 
-All dataclasses representing edge types in the TMP 3.0 Knowledge Graph.
+All dataclasses representing edge types in the knowledge graph.
 
-TMP 3.0 additions:
+Key elements:
   - KPIProfile fields are numeric (float/int) for arithmetic comparisons.
   - ScenarioNode: four TN/NTN deployment scenarios (Table 1 of the paper).
   - DeploymentModeNode: TN_Only / NTN_Only / Hybrid performance profiles (Table 5).
@@ -172,10 +172,10 @@ class KPIProfile:
     The numeric KPI signature of a service class.
     Auto-filled into ServiceIntent without asking the user.
 
-    TMP 3.0 change: all fields are numeric (float/int) instead of string
+    Note: all fields are numeric (float/int) instead of string
     enums, enabling arithmetic comparisons in conflict and escalation rules.
 
-    Sources per class — see docs/KG_TMP_3.0.md §3:
+    Sources per class — see the standards cited below:
         TimeCritical     : TS 22.104 §4.2, TS 22.261 Table 7.2-1
         MissionCritical  : TS 22.261 §6.2, TS 22.280 §5
         RemoteConnectivity: TR 38.821 §5.2
@@ -203,7 +203,7 @@ class KPIProfile:
 class ServiceClassNode:
     """
     A complete service class definition with all KG edges.
-    This is the atomic unit of the TMP 3.0 Knowledge Graph.
+    This is the atomic unit of the knowledge graph.
 
     Fields auto-filled into ServiceIntent (no user input needed):
         kpi_profile, traffic_pattern, implied_priority, implied_isolation

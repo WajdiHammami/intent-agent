@@ -1,8 +1,8 @@
 """
-TMP 3.0 — Pipeline Data Models
+Pipeline Data Models
 
 Central data structures shared across all pipeline stages.
-Carried over from TMP 2.0 with two changes:
+Two design points worth noting:
   1. ServiceIntent adds class_slots dict for class-specific elicited values.
   2. KPIProfile is now numeric (see ontology/types.py).
 """
@@ -21,7 +21,7 @@ from ontology.types import KPIProfile
 @dataclass
 class ServiceIntent:
     """
-    The final structured output of the TMP 3.0 pipeline.
+    The final structured output of the pipeline.
 
     Universal fields are always present. class_slots holds every
     class-specific slot elicited during the dialogue (application_type,
@@ -182,7 +182,7 @@ class DialogueTurn:
 @dataclass
 class DialogueState:
     """
-    The single source of truth for the TMP 3.0 pipeline.
+    The single source of truth for the pipeline.
 
     Injected into every LLM prompt via to_prompt_context().
     Updated by each pipeline stage and each dialogue turn.

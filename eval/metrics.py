@@ -1,9 +1,9 @@
 """
-TMP 3.0 — Evaluation Metrics
+Evaluation Metrics
 
 Computes per-sample and aggregate metrics for the paper evaluation.
 
-Paper metrics (from CLAUDE.md / §IV):
+Paper metrics (§IV):
   M1 — Intent Classification Accuracy
   M2 — Slot Extraction Coverage     (no-question fraction)
   M3 — Clarification Efficiency     (avg turns to valid profile)

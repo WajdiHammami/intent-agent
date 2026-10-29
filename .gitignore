@@ -4,16 +4,27 @@ __pycache__/
 *.pyo
 .venv/
 venv/
+*.egg-info/
 
-# Model files (large binaries — download separately)
+# Model weights (large binaries — download separately, see README)
 models/
+*.gguf
 
-# Generated eval outputs
+# Generated evaluation outputs (reproduce with the run_*.py scripts)
 eval/transcripts.json
 eval/results_full.json
 eval/results_full_old.json
+eval/ablation_results.json
+eval/kg_sweep_results.json
+eval/pure_llm_results.json
 eval/generated_samples.py
 eval/generated_samples.json
+
+# Agent/editor scratch
+CLAUDE.md
+.claude/
+.vscode/
+.idea/
 
 # OS
 .DS_Store

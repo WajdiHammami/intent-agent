@@ -2,13 +2,13 @@
 """
 run_eval.py — Batch Evaluation Runner
 
-Runs the full TMP 3.0 pipeline over a labeled dataset and writes:
+Runs the full pipeline over a labeled dataset and writes:
   eval/transcripts.json   — per-sample dialogue + all metrics
   eval/results_full.json  — aggregate + per-sample metric summary
 
 Usage
 -----
-    python run_eval.py                          # run all 43 samples
+    python run_eval.py                          # run all 72 samples
     python run_eval.py --class TC               # only TimeCritical samples
     python run_eval.py --type contradictory     # only contradictory samples
     python run_eval.py --ids TC-01 MC-03        # specific sample IDs
@@ -195,7 +195,7 @@ def print_comparison(new_agg, old_path: Path) -> None:
 # ── Main ───────────────────────────────────────────────────────────────────────
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="TMP 3.0 batch evaluation")
+    parser = argparse.ArgumentParser(description="Intent Agent — batch evaluation")
     parser.add_argument(
         "--model",
         default="models/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf",
@@ -226,8 +226,8 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    # Apply filters
-    samples = ALL_SAMPLES
+    # Main 72-sample evaluation set
+    samples = list(ALL_SAMPLES)
     if args.filter_class:
         samples = [s for s in samples if s.id.startswith(args.filter_class)]
     if args.filter_type:
@@ -239,7 +239,7 @@ def main() -> None:
         print("No samples matched the filter — nothing to run.")
         sys.exit(1)
 
-    print(f"\nTMP 3.0 Batch Evaluation — {len(samples)} sample(s)")
+    print(f"\nIntent Agent — Batch Evaluation — {len(samples)} sample(s)")
 
     # Check model
     model_path = Path(args.model)

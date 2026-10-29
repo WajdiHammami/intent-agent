@@ -1,5 +1,5 @@
 """
-TMP 3.0 — Dialogue Runner
+Dialogue Runner
 
 Drives the full intent → service profile pipeline:
   Stage 1: Classify intent (LLM soft classifier)
@@ -43,7 +43,7 @@ logger = logging.getLogger(__name__)
 
 class DialogueRunner:
     """
-    Orchestrates the TMP 3.0 pipeline for a single intent.
+    Orchestrates the pipeline for a single intent.
 
     Parameters
     ----------
@@ -54,7 +54,7 @@ class DialogueRunner:
     llm : LLMClient
         The LLM wrapper. Injected so tests can substitute a mock.
     kg : KGOntology | None
-        The knowledge graph. Defaults to the standard TMP 3.0 ontology.
+        The knowledge graph. Defaults to the standard ontology.
     verbose : bool
         Print dialogue turns to stdout when True.
     """
