@@ -3,7 +3,6 @@
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![LLM](https://img.shields.io/badge/LLM-Llama--3--8B%20(llama.cpp)-000000)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Research%20prototype-blue)
 
 Turn a messy, plain-English service request into a **validated, machine-ready
 configuration** — without trusting the language model to get the hard decisions
