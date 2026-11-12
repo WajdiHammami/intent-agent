@@ -20,8 +20,12 @@ alarms, and 2.6 vs 10.2 clarifying turns** (see [Results](#results)).
 
 ![A contradictory request: the knowledge graph flags the conflict, the user fixes it in one answer, and every label check passes](assets/demo-conflict.svg)
 
-It's the reference implementation behind a research paper on 6G network
-orchestration, but the pattern — *LLM for understanding, symbolic layer for
+I designed this method in my research paper on 6G network orchestration,
+*Knowledge-Guided LLM for Intent-Driven Service Orchestration in Integrated
+Terrestrial and Non-Terrestrial 6G Networks* (Hammami, Azam, Cherkaoui), and this
+repo is its implementation. Since the paper, I've re-evaluated it on a larger,
+harder benchmark (200 intents instead of 72) and a newer model; the results
+below are from that re-run. The pattern — *LLM for understanding, symbolic layer for
 decisions* — applies to any domain where an agent's output has to be correct, not
 just plausible: form intake, config generation, compliance checks, structured
 data extraction.
@@ -246,8 +250,9 @@ ollama pull llama3.1:8b
 intent-agent                                        # opens the interactive shell
 ```
 
-The default model is `llama3.1:8b`. The paper's numbers were produced with
-Llama-3-8B-Instruct (4-bit); to reproduce them, pull it and pass
+The default model is `llama3.1:8b`. The numbers in my paper were produced with
+Llama-3-8B-Instruct (4-bit) on the original 72-intent benchmark; to run that
+model, pull it and pass
 `--model llama3:8b-instruct-q4_K_M`. Global options: `--model <ollama tag>`,
 `--ollama-url`, `--results-dir` (env: `OLLAMA_MODEL`, `OLLAMA_HOST`,
 `INTENT_AGENT_RESULTS`). `python -m cli` works too.
@@ -406,8 +411,11 @@ improvement isn't tuned on the numbers it is reported with.
 
 Every sample carries a ground-truth class, an expected slot subset, and (for
 contradictory samples) the conflict that *should* be caught. **Labels are
-hand-authored and verified against the ontology — never taken from LLM output.**
-The LLM stages run zero-shot, so there's no train/test split to worry about.
+written per sample, not produced by the pipeline being evaluated, and checked
+against the ontology by tests** (every expected conflict keyword must match a
+rule). The 100 intents added after the paper were drafted with AI assistance
+and reviewed. The LLM stages run zero-shot, with no training; the dev/test
+split only keeps prompt changes from being tuned on the numbers reported.
 Multi-turn dialogue is evaluated with an LLM standing in as the user, driven by a
 per-sample scenario script.
 
@@ -421,7 +429,7 @@ industrial control), **MissionCritical** (resilient public-safety with fallback)
 ## About
 
 Built by **Wajdi Hammami** ([@WajdiHammami](https://github.com/WajdiHammami)),
-Polytechnique Montreal, as the reference implementation for the paper *"Knowledge-
+Polytechnique Montreal. It implements my paper *"Knowledge-
 Guided LLM for Intent-Driven Service Orchestration in Integrated Terrestrial and
 Non-Terrestrial 6G Networks"* (Hammami, Azam, Cherkaoui).
 
