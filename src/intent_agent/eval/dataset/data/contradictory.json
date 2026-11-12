@@ -1,0 +1,782 @@
+[
+  {
+    "id": "CF-01",
+    "intent": "We need a dedicated 5G slice for a critical control system but want the absolute lowest cost possible.",
+    "scenario": "You are an engineer who asked for the cheapest option. When the system flags a conflict between Dedicated slice and LowCost, you agree to upgrade to Balanced. Application: RoboticControl. Cycle time: 2 ms. Geographic scope: Campus. Sector: Manufacturing.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "dedicated",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-02",
+    "intent": "Mission-critical emergency network with Critical SLA priority but we insist on LowCost profile to stay within tight budget.",
+    "scenario": "You are a budget-constrained IT manager. When told Critical+LowCost is incompatible, you agree to upgrade to Balanced. Deployment mode: TN_Only. Geographic scope: Urban. Isolation: Shared. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Critical",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-03",
+    "intent": "Deploy terrestrial-only IoT connectivity for maritime buoys and coastal sea-level monitoring stations. Budget must be minimal.",
+    "scenario": "You are the IoT engineer for a coastal monitoring authority. When the system flags TN-only is not viable in Maritime, you agree to switch to NTN_Only. NTN tier: LEO. Geographic scope: Maritime. Device density: 50/km2. Reporting interval: 3600 s. Payload: 50 bytes. Battery: yes. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Maritime",
+      "TN_Only"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-04",
+    "intent": "Critical robot control for an offshore platform requires a Hybrid TN/NTN deployment. The NTN layer should use GEO satellite for wide-area coverage.",
+    "scenario": "You are the OT engineer on an offshore oil platform. When told GEO is incompatible with Critical priority, you agree to switch to LEO. Application: RoboticControl. Cycle time: 2 ms. Geographic scope: Maritime. Cost: Premium. Sector: Energy.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "Critical"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-05",
+    "intent": "We need a mission-critical telemedicine network for remote surgery assistance in rural hospitals. Real-time video with sub-100 ms latency is required. GEO satellite preferred for wide national coverage.",
+    "scenario": "You are the CTO of a telemedicine platform. When the system flags that GEO RTT (~540 ms) is incompatible with latency-sensitive surgical operations, you agree to switch to LEO. Deployment mode: Hybrid. Geographic scope: National. Max failover: 30 seconds. Isolation: Dedicated. Cost: Premium. Sector: Healthcare.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "latency"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-06",
+    "intent": "Offshore oil rigs in the Gulf of Mexico need live two-way video conferencing with onshore engineers and real-time interactive control. GEO satellite is already installed on all platforms.",
+    "scenario": "You are the network manager for an offshore energy company. When told GEO RTT is incompatible with interactive traffic, you agree to switch to LEO. NTN tier: GEO. Geographic scope: Maritime. Min throughput: 10 Mbps. Latency budget: 80 ms. Interactive traffic: True. Isolation: Shared. Cost: Balanced. Sector: Energy.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "interactive"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-07",
+    "intent": "Deploy 2 million smart water meters across the city with a fully dedicated Premium network slice to guarantee zero interference.",
+    "scenario": "You are the IoT architect for a water utility. When told a dedicated Premium slice is economically unviable for massive IoT at this scale, you agree to switch to Shared isolation and LowCost profile. Device density: 1200/km2. Reporting interval: 1200 s. Payload: 150 bytes. Battery: yes. Target lifetime: 8 years. Geographic scope: CityWide. Sector: SmartCity.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Dedicated",
+      "Premium"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-08",
+    "intent": "We need precise 1 ms robotic welding arm control for our new factory line. We are a startup — must use the lowest cost connectivity plan available.",
+    "scenario": "You are the CTO of a robotics startup. When told Critical priority is incompatible with LowCost, you agree to upgrade to Balanced. Application: RoboticControl. Cycle time: 1 ms. Geographic scope: Campus. Sector: Manufacturing.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Critical",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-09",
+    "intent": "V2X platooning for highway trucks: sub-millisecond communication required. Budget is very tight — we need the cheapest 5G plan available.",
+    "scenario": "You are a fleet technology manager. When the system flags Critical+LowCost as incompatible, you accept upgrading to Balanced. Application: V2X. V2X scenario: Platooning. Cycle time: 0.8 ms. Geographic scope: Urban. Sector: Automotive.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Critical",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-10",
+    "intent": "Smart grid protection relay needs trip time under 3 ms per IEC 61850. The utility has a strict cost-reduction mandate — LowCost profile only.",
+    "scenario": "You are a grid automation engineer. When told Critical latency cannot be guaranteed at LowCost, you agree to switch to Balanced. Application: GridProtection. Cycle time: 3 ms. Geographic scope: Campus. Sector: Energy.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Critical",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-11",
+    "intent": "Surgical robot remote operation requires 0.5 ms closed-loop control. The hospital procurement policy mandates using only the cheapest available connectivity tier.",
+    "scenario": "You are the medical IT director. When the system flags that Critical SLA cannot be met at LowCost, you agree to use Balanced. Application: RemoteProcessControl. Cycle time: 0.5 ms. Geographic scope: Campus. Sector: Healthcare.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Critical",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-12",
+    "intent": "Command and control center for emergency services needs Critical SLA priority to guarantee comms during incidents. Budget freeze means we can only approve LowCost connectivity.",
+    "scenario": "You are the IT manager for a city emergency services department. When Critical+LowCost is flagged, you accept Balanced as a compromise. Deployment mode: TN_Only. Geographic scope: CityWide. Isolation: Dedicated. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Critical",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-13",
+    "intent": "National power grid monitoring needs Critical SLA priority — outages must be detected in milliseconds. Our procurement team insists on LowCost.",
+    "scenario": "You are a grid security engineer. When told Critical+LowCost is incompatible, you agree to Balanced. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 60 s. Geographic scope: National. Isolation: Dedicated. Sector: Energy.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Critical",
+      "LowCost"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-14",
+    "intent": "Chemical plant process control needs a fully dedicated 5G slice for safety isolation. Cost must be the absolute minimum.",
+    "scenario": "You are the process safety engineer. When told Dedicated+LowCost is not offered, you agree to switch to Balanced. Application: RemoteProcessControl. Cycle time: 2 ms. Geographic scope: Campus. Sector: Industry.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "dedicated",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-15",
+    "intent": "Police and fire communications require a dedicated slice to prevent interference from commercial traffic. Budget is extremely tight — we can only afford LowCost.",
+    "scenario": "You are the public safety network manager. When told a dedicated slice requires at least Balanced, you agree to upgrade. Deployment mode: TN_Only. Geographic scope: CityWide. Max failover: 30 s. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "dedicated",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-16",
+    "intent": "Offshore wind farm telemetry needs a dedicated network slice to ensure no data loss. We need the lowest cost profile — it's a renewable energy project with thin margins.",
+    "scenario": "You are the wind farm operations engineer. When told Dedicated+LowCost is not available, you agree to Balanced. Geographic scope: Maritime. NTN tier: LEO. Isolation: Dedicated. Sector: Energy.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "dedicated",
+      "LowCost"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-17",
+    "intent": "We need a dedicated 5G slice for 3 million precision agriculture sensors to avoid any shared-network congestion. Budget must be LowCost.",
+    "scenario": "You are the IoT architect for an agri-tech company. When told Dedicated+LowCost is incompatible at IoT scale, you accept Shared isolation or Balanced cost. Device density: 300/km2. Reporting interval: 900 s. Payload: 60 bytes. Battery: yes. Geographic scope: Regional. Sector: Agriculture.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "dedicated",
+      "LowCost"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-18",
+    "intent": "Mine shaft environment monitoring: gas sensors and rock stability detectors need a dedicated slice for worker safety. Cost profile must be LowCost.",
+    "scenario": "You are the mine safety engineer. When told a dedicated slice requires Balanced or Premium, you agree to Balanced. Application: RemoteProcessControl. Cycle time: 5 ms. Geographic scope: Campus. Sector: Industry.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "dedicated",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-19",
+    "intent": "A fleet of 300 deep-sea fishing vessels needs broadband connectivity for weather updates and navigation. They operate 400 km offshore. We want terrestrial-only 5G — no satellite.",
+    "scenario": "You are the fleet manager. When told TN-only is not viable in Maritime scenarios, you agree to switch to NTN_Only. NTN tier: LEO. Geographic scope: Maritime. Min throughput: 10 Mbps. Latency budget: 400 ms. Isolation: Shared. Cost: Balanced. Sector: Maritime.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Maritime",
+      "TN_Only"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-20",
+    "intent": "Ocean research vessel needs connectivity for satellite data uploads and crew welfare. The ship operates in open Pacific. Connectivity should use land towers only — no satellite.",
+    "scenario": "You are the IT coordinator for a research institute. When told TN-only is not viable in Maritime, you agree to NTN_Only. NTN tier: LEO. Geographic scope: Maritime. Min throughput: 5 Mbps. Latency budget: 500 ms. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Maritime",
+      "TN_Only"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-21",
+    "intent": "Mission-critical communications for an offshore oil drilling platform in the North Sea. The platform is 200 km from shore. Must use terrestrial 5G only for data security policy reasons.",
+    "scenario": "You are the platform IT manager. When told TN-only is not viable 200 km offshore, you agree to Hybrid. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 15 s. Geographic scope: Maritime. Isolation: Dedicated. Cost: Premium. Sector: Energy.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Maritime",
+      "TN_Only"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-22",
+    "intent": "Remote robotic inspection of subsea pipelines from a surface vessel. Need real-time control — vessel is in open sea. Security policy requires terrestrial-only connectivity.",
+    "scenario": "You are the subsea operations engineer. When told TN-only is not viable for open-sea vessels, you agree to Hybrid. Application: RemoteProcessControl. Cycle time: 5 ms. Geographic scope: Maritime. Cost: Premium. Sector: Energy.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Maritime",
+      "TN_Only"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-23",
+    "intent": "Ocean-based IoT network: 50,000 wave-energy sensors deployed across open Atlantic waters. Sensors report every hour. Data must route through terrestrial towers only.",
+    "scenario": "You are the IoT architect for a marine energy company. When told TN-only is not viable in Maritime, you agree to NTN_Only. Device density: 20/km2. Reporting interval: 3600 s. Payload: 100 bytes. Battery: yes. Geographic scope: Maritime. Isolation: Shared. Cost: LowCost. Sector: Energy.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Maritime",
+      "TN_Only"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-24",
+    "intent": "Remote CNC machining facility on an island: robotic arms need 2 ms control cycle. GEO satellite is the only connectivity option on the island.",
+    "scenario": "You are the manufacturing engineer. When told GEO RTT (~540 ms) is incompatible with 2 ms control cycle, you agree to switch to LEO. Application: RoboticControl. Cycle time: 2 ms. Geographic scope: Maritime. Cost: Premium. Sector: Manufacturing.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "Critical"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-25",
+    "intent": "Autonomous port crane at a remote Pacific island: requires 2 ms control for safe container handling. GEO satellite available for backhaul.",
+    "scenario": "You are the port operations engineer. When told GEO satellite RTT is incompatible with Critical latency, you agree to LEO. Application: RoboticControl. Cycle time: 2 ms. Geographic scope: Campus. Cost: Balanced. Sector: Transportation.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "Critical"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-26",
+    "intent": "Disaster relief command center in a remote area with no terrestrial network. Requires Critical SLA for emergency coordination. Only a GEO satellite dish is available on site.",
+    "scenario": "You are the emergency coordinator. When told GEO RTT (~540 ms) conflicts with Critical SLA, you agree to use LEO instead. Deployment mode: NTN_Only. Geographic scope: Regional. Max failover: 30 s. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "Critical"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-27",
+    "intent": "Remote patient monitoring and telemedicine for a rural hospital network. Need sub-50 ms round-trip for live diagnostics. GEO satellite available.",
+    "scenario": "You are the telemedicine CTO. When told GEO RTT (~540 ms) is incompatible with sub-50 ms diagnostics, you agree to switch to LEO. Deployment mode: Hybrid. Geographic scope: Regional. Max failover: 60 s. Isolation: Dedicated. Cost: Premium. Sector: Healthcare.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "latency"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-28",
+    "intent": "Industrial automation monitoring for a remote mine: sensor data must trigger safety shutdowns within 80 ms. GEO satellite installed on site.",
+    "scenario": "You are the mine safety IT manager. When told GEO latency conflicts with the 80 ms safety loop requirement, you agree to LEO. Deployment mode: Hybrid. Geographic scope: Regional. Isolation: Dedicated. Cost: Balanced. Sector: Industry.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "latency"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-29",
+    "intent": "Offshore ship-to-shore live video collaboration for 20 vessels. Engineers need real-time interactive video with onshore teams. GEO satellite already installed on all vessels.",
+    "scenario": "You are the operations manager for an offshore engineering firm. When told GEO RTT is incompatible with interactive video, you agree to switch to LEO. NTN tier: GEO. Geographic scope: Maritime. Min throughput: 5 Mbps. Latency budget: 80 ms. Interactive traffic: True. Isolation: Shared. Cost: Balanced. Sector: Energy.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "interactive"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-30",
+    "intent": "Nationwide precision agriculture sensor network: 5 million devices monitoring soil and crop conditions. We require a fully dedicated Premium slice for guaranteed SLA.",
+    "scenario": "You are the IoT architect for an agri-tech company. When told Dedicated+Premium is economically unviable for 5M devices, you agree to use Shared isolation and Balanced cost. Device density: 500/km2. Reporting interval: 900 s. Payload: 50 bytes. Battery: yes. Target lifetime: 5 years. Geographic scope: Regional. Sector: Agriculture.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Dedicated",
+      "Premium"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-31",
+    "intent": "Urban smart parking: 1 million sensors reporting occupancy every 5 minutes. City council requires a dedicated Premium slice to guarantee 100% uptime for parking revenue systems.",
+    "scenario": "You are the smart city IoT manager. When told Dedicated+Premium is not viable for million-device deployments, you agree to Shared isolation and Balanced cost. Device density: 3000/km2. Reporting interval: 300 s. Payload: 10 bytes. Battery: yes. Geographic scope: CityWide. Sector: SmartCity.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Dedicated",
+      "Premium"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-32",
+    "intent": "Emergency response coordination for a major earthquake zone. Mission-critical communications for first responders. We want terrestrial 5G only — no satellite dependencies.",
+    "scenario": "You are the emergency response IT director. When told TN-only is not viable in Disaster scenarios (TN may be destroyed), you agree to use Hybrid. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 30 s. Geographic scope: Regional. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-33",
+    "intent": "Field hospital communications during a flood disaster. Medical staff need mission-critical connectivity. Policy: terrestrial 5G only for HIPAA compliance.",
+    "scenario": "You are the field hospital IT coordinator. When told TN infrastructure may be degraded in Disaster scenarios and TN-only is not viable, you agree to Hybrid. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 20 s. Geographic scope: Regional. Isolation: Dedicated. Cost: Premium. Sector: Healthcare.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-34",
+    "intent": "Wildfire response coordination for fire crews across a large forest area. Real-time command and control needed. Terrestrial towers only please.",
+    "scenario": "You are the wildfire operations coordinator. When told TN-only is not viable in Disaster/wildfire areas (towers may burn), you agree to Hybrid with LEO fallback. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 60 s. Geographic scope: Regional. Isolation: Dedicated. Cost: Balanced. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-35",
+    "intent": "Robotic search and rescue in a post-earthquake collapsed building area. Robot control requires 2 ms cycle time. Terrestrial infrastructure only — no satellite allowed.",
+    "scenario": "You are the rescue robotics engineer. When told TN-only is not viable in Disaster zones (TN may be damaged), you agree to Hybrid. Application: RoboticControl. Cycle time: 2 ms. Geographic scope: Urban. Cost: Premium. Sector: Government.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-36",
+    "intent": "Remote actuator control for emergency flood gate closure. Must operate within 1 ms for safety. City mandates terrestrial-only for all critical infrastructure.",
+    "scenario": "You are the city infrastructure engineer. When told TN-only is not viable in Disaster scenarios, you agree to Hybrid. Application: RemoteProcessControl. Cycle time: 1 ms. Geographic scope: Urban. Cost: Balanced. Sector: Government.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-37",
+    "intent": "Air quality and hazardous gas monitoring in a chemical plant disaster zone: 10,000 sensors need real-time reporting. Connectivity must be terrestrial only per the plant operator's security policy.",
+    "scenario": "You are the plant safety engineer. When told TN-only is not viable in Disaster scenarios, you agree to Hybrid. Device density: 5000/km2. Reporting interval: 60 s. Payload: 50 bytes. Battery: yes. Geographic scope: Campus. Isolation: Shared. Cost: LowCost. Sector: Industry.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-38",
+    "intent": "Displaced persons camp connectivity after a major tsunami. Need broadband to bring internet to 10,000 displaced people. Terrestrial 5G towers only — satellite access not approved.",
+    "scenario": "You are the humanitarian connectivity coordinator. When told TN-only is not viable in Disaster zones (towers may be down), you agree to NTN_Only with LEO. NTN tier: LEO. Geographic scope: Regional. Min throughput: 5 Mbps. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-39",
+    "intent": "Hurricane evacuation coordination for a coastal city. Mission-critical push-to-talk and video for evacuation officers. Terrestrial-only connectivity as per department policy.",
+    "scenario": "You are the emergency management director. When told TN towers in the hurricane zone may be inoperable and TN-only is not viable, you agree to Hybrid. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 30 s. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-40",
+    "intent": "Structural health monitoring for bridges in a major earthquake aftermath. 100,000 vibration sensors need to report every minute. Connectivity via terrestrial cell towers only.",
+    "scenario": "You are the civil infrastructure IoT engineer. When told TN-only is not viable in Disaster zones, you agree to Hybrid. Device density: 2000/km2. Reporting interval: 60 s. Payload: 100 bytes. Battery: yes. Geographic scope: Regional. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-41",
+    "intent": "Robotic ore-handling control at a remote mine with a 2 ms loop. Hybrid deployment, using our existing GEO VSAT as the resilience link.",
+    "scenario": "You are the mine automation engineer. When told GEO is incompatible with Critical priority, you agree to switch to LEO. Application: RoboticControl. Cycle time: 2 ms. Deployment mode: Hybrid. NTN tier: GEO. Geographic scope: Campus. Isolation: Dedicated. Cost: Premium. Sector: Industry.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "Critical"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-42",
+    "intent": "Tram priority and collision warnings at city intersections on a 2 ms cycle. Critical priority is a must, but we can only pay the LowCost tariff.",
+    "scenario": "You are the tram network signalling lead. When told Critical priority is incompatible with LowCost, you agree to upgrade to Balanced. Application: V2X. V2X scenario: Intersection. Cycle time: 2 ms. Geographic scope: CityWide. Isolation: Dedicated. Cost: LowCost. Sector: Transportation.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Critical",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-43",
+    "intent": "Mission-critical police dispatch network for the city with 99.999% availability. Put it on a shared slice and keep it terrestrial-only.",
+    "scenario": "You are the police communications manager. When told a shared TN-only slice cannot guarantee five-nines availability, you agree to a Dedicated slice. Deployment mode: TN_Only. Geographic scope: CityWide. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "shared",
+      "TN-only"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-44",
+    "intent": "Hospital emergency paging must be available 99.999% of the time. Use the shared public slice and terrestrial towers only, no satellite.",
+    "scenario": "You are the hospital network manager. When told a shared TN-only slice cannot meet five-nines availability, you agree to add LEO fallback (Hybrid). Max failover: 20 s. Deployment mode: TN_Only. Geographic scope: CityWide. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "shared",
+      "TN-only"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-45",
+    "intent": "Our Arctic research vessel needs to operate seabed instruments remotely in real time from shore. Use the GEO link already on board.",
+    "scenario": "You are the research vessel IT officer. When told GEO latency is incompatible with interactive control, you agree to switch to LEO. Geographic scope: Maritime. NTN tier: GEO. Min throughput: 10 Mbps. Latency budget: 100 ms. Interactive traffic: True. Vessel count: 1. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "interactive"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-46",
+    "intent": "Live telehealth video consultations for 60 remote clinics, delivered over the GEO VSAT terminals the clinics already have.",
+    "scenario": "You are the rural health network coordinator. When told GEO is too slow for interactive video, you agree to switch to LEO. Geographic scope: Rural. NTN tier: GEO. Min throughput: 8 Mbps. Latency budget: 150 ms. Interactive traffic: True. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "interactive"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-47",
+    "intent": "Workers at a remote mining camp need real-time voice and video calls with their families. GEO satellite is the cheapest, so use that.",
+    "scenario": "You are the mining camp services manager. When told GEO latency rules out interactive calls, you agree to switch to LEO. Geographic scope: Rural. NTN tier: GEO. Min throughput: 20 Mbps. Latency budget: 150 ms. Interactive traffic: True. Isolation: Shared. Cost: Balanced. Sector: Industry.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "GEO",
+      "interactive"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-48",
+    "intent": "Dedicated satellite slice for a rural farming cooperative, on the lowest-cost plan available.",
+    "scenario": "You are the cooperative's IT volunteer. When told a dedicated slice is not offered at LowCost, you agree to Balanced. Geographic scope: Rural. NTN tier: LEO. Min throughput: 5 Mbps. Latency budget: 300 ms. Isolation: Dedicated. Cost: LowCost. Sector: Agriculture.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "dedicated",
+      "LowCost"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-49",
+    "intent": "Our fishing fleet wants its own dedicated slice at sea, but at the absolute cheapest price.",
+    "scenario": "You are the fishing fleet manager. When told a dedicated slice is not offered at LowCost, you agree to a Shared slice. Geographic scope: Maritime. NTN tier: LEO. Min throughput: 5 Mbps. Latency budget: 400 ms. Vessel count: 120. Isolation: Dedicated. Cost: LowCost. Sector: Maritime.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "dedicated",
+      "LowCost"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-50",
+    "intent": "Passenger internet on ferries crossing 80 km of open sea between islands. Shore cell towers only; we do not want satellite.",
+    "scenario": "You are the ferry operator IT manager. When told TN-only is not viable in Maritime, you agree to Hybrid with LEO. Deployment scenario: Maritime. Deployment mode: TN_Only. Geographic scope: Maritime. NTN tier: LEO. Min throughput: 20 Mbps. Latency budget: 200 ms. Vessel count: 8. Isolation: Shared. Cost: Balanced. Sector: Transportation.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Maritime",
+      "TN_Only"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-51",
+    "intent": "Connectivity for fish farms anchored 60 km offshore, served by terrestrial cell towers only.",
+    "scenario": "You are the aquaculture operations manager. When told TN-only is not viable in Maritime, you agree to NTN_Only. Deployment scenario: Maritime. Deployment mode: TN_Only. Geographic scope: Maritime. NTN tier: LEO. Min throughput: 5 Mbps. Latency budget: 400 ms. Vessel count: 15. Isolation: Shared. Cost: Balanced. Sector: Agriculture.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Maritime",
+      "TN_Only"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-52",
+    "intent": "Restore connectivity for displaced communities in the flooded rural districts. Use the existing terrestrial towers only.",
+    "scenario": "You are the humanitarian connectivity lead. When told TN-only is not viable in a Disaster scenario, you agree to NTN_Only via UAV/HAPS. Deployment scenario: Disaster. Deployment mode: TN_Only. Geographic scope: Rural. NTN tier: UAV_HAPS. Min throughput: 5 Mbps. Latency budget: 200 ms. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-53",
+    "intent": "After the hurricane, bring broadband back to the island community using only the cell towers that are still standing.",
+    "scenario": "You are the island council's recovery coordinator. When told TN-only is not viable in a Disaster scenario, you agree to Hybrid with LEO. Deployment scenario: Disaster. Deployment mode: TN_Only. Geographic scope: Rural. NTN tier: LEO. Min throughput: 10 Mbps. Latency budget: 300 ms. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-54",
+    "intent": "Best-effort parking sensors across downtown, 400,000 devices reporting hourly. Put them on the Premium cost tier.",
+    "scenario": "You are the parking program manager. When told Premium is inconsistent with low-priority IoT, you agree to LowCost. Device density: 4000/km2. Reporting interval: 3600 s. Payload: 20 bytes. Battery: yes. Target lifetime: 7 years. Geographic scope: CityWide. Isolation: Shared. Cost: Premium. Sector: SmartCity.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Premium",
+      "Low-priority"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-55",
+    "intent": "1 million soil sensors reporting daily over satellite IoT. Low priority traffic, but we want the Premium package.",
+    "scenario": "You are the agronomy data lead. When told Premium is inconsistent with low-priority IoT, you agree to Balanced. Device density: 80/km2. Reporting interval: 86400 s. Payload: 40 bytes. Battery: yes. Target lifetime: 6 years. NTN tier: LEO. Geographic scope: Regional. Isolation: Shared. Cost: Premium. Sector: Agriculture.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Premium",
+      "Low-priority"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-56",
+    "intent": "City-wide smart water meters, 900,000 devices reporting every 30 minutes. We insist on a fully dedicated, Premium slice.",
+    "scenario": "You are the water utility network engineer. When told Dedicated+Premium is unviable for massive IoT, you agree to Shared and LowCost. Device density: 1300/km2. Reporting interval: 1800 s. Payload: 120 bytes. Battery: yes. Target lifetime: 10 years. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: SmartCity.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Dedicated",
+      "Premium"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "CF-57",
+    "intent": "Nationwide trailer trackers, 2 million units, hourly updates. Terrestrial plus satellite, on a dedicated Premium slice.",
+    "scenario": "You are the fleet telematics architect. When told Dedicated+Premium is unviable at this scale, you agree to Shared and Balanced. Device density: 20/km2. Reporting interval: 3600 s. Payload: 60 bytes. Battery: yes. Target lifetime: 5 years. Deployment mode: Hybrid. NTN tier: LEO. Geographic scope: National. Isolation: Dedicated. Cost: Premium. Sector: Transportation.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Dedicated",
+      "Premium"
+    ],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-58",
+    "intent": "Temperature loggers in 50,000 refrigerated containers on ocean-going ships. Connect them over terrestrial networks only.",
+    "scenario": "You are the cold-chain IoT manager. When told TN-only is not viable in Maritime, you agree to NTN_Only with LEO. Deployment scenario: Maritime. Deployment mode: TN_Only. Device density: 5/km2. Reporting interval: 900 s. Payload: 32 bytes. Battery: yes. Target lifetime: 3 years. Geographic scope: Maritime. Isolation: Shared. Cost: LowCost. Sector: Transportation.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Maritime",
+      "TN_Only"
+    ],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "CF-59",
+    "intent": "After the earthquake, deploy 30,000 structural-health sensors in damaged buildings. Use the existing cell towers only.",
+    "scenario": "You are the structural monitoring engineer. When told TN-only is not viable in a Disaster scenario, you agree to Hybrid with UAV/HAPS. Deployment scenario: Disaster. Deployment mode: TN_Only. Device density: 300/km2. Reporting interval: 300 s. Payload: 48 bytes. Battery: yes. Target lifetime: 2 years. Geographic scope: CityWide. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "Disaster",
+      "TN_Only"
+    ],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "CF-60",
+    "intent": "Smart street lighting controllers for 250,000 lamps. We want a dedicated slice at the lowest possible cost.",
+    "scenario": "You are the street lighting program lead. When told a dedicated slice is not offered at LowCost, you agree to a Shared slice. Device density: 600/km2. Reporting interval: 900 s. Payload: 24 bytes. Battery: no. Geographic scope: CityWide. Isolation: Dedicated. Cost: LowCost. Sector: SmartCity.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {},
+    "expected_conflicts": [
+      "dedicated",
+      "LowCost"
+    ],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  }
+]

@@ -10,16 +10,6 @@ venv/
 models/
 *.gguf
 
-# Generated evaluation outputs (reproduce with the run_*.py scripts)
-eval/transcripts.json
-eval/results_full.json
-eval/results_full_old.json
-eval/ablation_results.json
-eval/kg_sweep_results.json
-eval/pure_llm_results.json
-eval/generated_samples.py
-eval/generated_samples.json
-
 # Agent/editor scratch
 CLAUDE.md
 .claude/
@@ -29,3 +19,8 @@ CLAUDE.md
 # OS
 .DS_Store
 Thumbs.db
+
+# Experiment outputs and test caches
+results/
+.pytest_cache/
+profile.json

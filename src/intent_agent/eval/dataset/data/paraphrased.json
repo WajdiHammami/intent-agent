@@ -1,0 +1,511 @@
+[
+  {
+    "id": "EXT-TC-05",
+    "intent": "A high-precision CNC milling system for aerospace parts manufacturing must sync tool movements within 1 millisecond across 10 machines. Balanced cost, dedicated 5G slice.",
+    "scenario": "You are the manufacturing engineer at an aerospace supplier. Application: RoboticControl. Cycle time: 1 ms. Geographic scope: Campus. Cost: Balanced. Sector: Manufacturing.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RoboticControl",
+      "isolation_level": "Dedicated"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-TC-01",
+    "intent": "Deploy a 5G slice for synchronized motion control across 60 industrial welding robots on an automobile production line. Control cycle must not exceed 1 ms. Isolated slice, Premium budget.",
+    "scenario": "You are the OT engineer at an automotive factory. Application type: RoboticControl. Cycle time: 1 ms. Geographic scope: Campus. Cost: Premium. Sector: Manufacturing.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RoboticControl",
+      "isolation_level": "Dedicated"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-TC-02",
+    "intent": "Highway truck convoy automation needs wireless synchronization below 1 ms for safe platooning. Dedicated 5G on a regional highway corridor. Premium budget.",
+    "scenario": "You are a transportation systems engineer. Application: V2X. V2X scenario: Platooning. Cycle time: 0.8 ms. Geographic scope: Urban. Cost: Premium. Sector: Automotive.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "V2X",
+      "isolation_level": "Dedicated"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "EXT-MC-05",
+    "intent": "National railway signalling and control network must maintain continuous operation even during regional network outages. Satellite backup required. Premium, nationwide.",
+    "scenario": "You are the railway network engineer. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 15 s. Geographic scope: National. Isolation: Dedicated. Cost: Premium. Sector: Transportation.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "Hybrid",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-MC-01",
+    "intent": "National emergency services — police, fire, and EMS — need a dedicated resilient network. Must stay operational if ground infrastructure fails, using LEO satellite as backup. Premium cost.",
+    "scenario": "You are the CTO of a national public safety agency. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 30 seconds. Geographic scope: National. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "Hybrid",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-MC-02",
+    "intent": "Mission-critical monitoring at a petroleum refinery must switch to satellite if the terrestrial link fails. Single-site campus, moderate cost acceptable.",
+    "scenario": "You are the IT manager at an oil refinery. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 10 seconds. Geographic scope: Campus. Isolation: Shared. Cost: Balanced. Sector: Energy.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "Hybrid",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "EXT-RC-05",
+    "intent": "Provide internet access to 150 remote mining camps spread across a 200,000 km² wilderness region. At least 10 Mbps per camp. Latency under 500 ms is acceptable. LEO satellite.",
+    "scenario": "You are the mining company's IT manager. Geographic scope: Rural. NTN tier: LEO. Min throughput: 10 Mbps. Latency budget: 400 ms. Isolation: Shared. Cost: Balanced. Sector: Industry.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Rural",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "PAR-RC-01",
+    "intent": "Over 150 oil extraction platforms in the North Sea need broadband for operations and crew. Each needs at least 10 Mbps, a few hundred milliseconds latency is fine. Prefer satellite.",
+    "scenario": "You are the network director for an offshore oil company. Geographic scope: Maritime. NTN tier: LEO. Min throughput: 10 Mbps. Latency budget: 300 ms. Vessel count: 150. Isolation: Shared. Cost: Balanced. Sector: Energy.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Maritime",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "PAR-RC-02",
+    "intent": "Bring internet to 200 isolated communities in mountainous terrain. Minimum 5 Mbps per community, latency under 500 ms. LEO satellite is the only viable option.",
+    "scenario": "You are a rural connectivity project manager. Geographic scope: Rural. NTN tier: LEO. Min throughput: 5 Mbps. Latency budget: 400 ms. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Rural",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "EXT-MAC-05",
+    "intent": "Rolling out 3 million smart gas meters across a national gas utility. Meters report consumption once per day, 100-byte payloads. Battery-powered, 10-year target, minimal cost.",
+    "scenario": "You are the IoT architect for a gas utility. Device density: 800/km2. Reporting interval: 86400 s. Payload: 100 bytes. Battery: yes. Target lifetime: 10 years. Geographic scope: National. Isolation: Shared. Cost: LowCost. Sector: Energy.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-DC-01",
+    "intent": "Roll out wireless connectivity for 2 million residential electricity meters across the city. Each sends a reading every 30 minutes. Battery-powered, 10-year lifetime. Messages are 200 bytes.",
+    "scenario": "You are the IoT architect for a utility company. Device density: 1500/km2. Reporting interval: 1800 s. Payload: 200 bytes. Battery: yes. Target lifetime: 10 years. Geographic scope: CityWide. Isolation: Shared. Cost: LowCost. Sector: Energy.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-DC-02",
+    "intent": "City-wide IoT for parking sensors, street lighting, and refuse bins — about 1 million nodes, checking in hourly. Tiny data payloads. Budget must be minimal.",
+    "scenario": "You are the smart city project manager. Device density: 5000/km2. Reporting interval: 3600 s. Payload: 20 bytes. Battery: yes. Target lifetime: 7 years. Geographic scope: CityWide. Isolation: Shared. Cost: LowCost. Sector: SmartCity.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-TC-03",
+    "intent": "Two dozen packaging robots on a drug bottling line have to move in lockstep, with control updates every 2 milliseconds. We want an isolated slice on site at a moderate price.",
+    "scenario": "You are the automation lead at a pharmaceutical plant. Application: RoboticControl. Cycle time: 2 ms. Geographic scope: Campus. Isolation: Dedicated. Cost: Balanced. Sector: Manufacturing.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RoboticControl",
+      "isolation_level": "Dedicated"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-TC-04",
+    "intent": "Our relays protecting the urban MV feeders must clear faults in 4 ms or less, with protection messages every millisecond, across the whole city. Top-tier budget.",
+    "scenario": "You are the distribution automation engineer at a city utility. Application: GridProtection. Trip time: 4 ms. Cycle time: 1 ms. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: Energy.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "GridProtection",
+      "priority_level": "Critical"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-TC-05",
+    "intent": "Forty traffic-light junctions downtown will warn cars of imminent crashes; the car-to-infrastructure exchange needs a 3 ms update cycle. Isolated slice, premium pricing.",
+    "scenario": "You are the city ITS program manager. Application: V2X. V2X scenario: Intersection. Cycle time: 3 ms. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: Automotive.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "V2X",
+      "isolation_level": "Dedicated"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-TC-06",
+    "intent": "We operate an automated drill rig far out in the desert and steer its actuators remotely every 2 ms. On-site 5G backed by low-orbit satellite. Isolated slice, high budget.",
+    "scenario": "You are the drilling automation engineer. Application: RemoteProcessControl. Cycle time: 2 ms. Deployment mode: Hybrid. NTN tier: LEO. Geographic scope: Campus. Isolation: Dedicated. Cost: Premium. Sector: Energy.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RemoteProcessControl",
+      "isolation_level": "Dedicated"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-TC-07",
+    "intent": "The substation of a wind park 40 km out at sea needs its protection relays to trip in under 4 ms, signalling every 2 ms. Subsea fibre as primary, low-orbit satellite as standby. Premium, isolated.",
+    "scenario": "You are the offshore grid engineer. Application: GridProtection. Trip time: 4 ms. Cycle time: 2 ms. Deployment mode: Hybrid. NTN tier: LEO. Geographic scope: Maritime. Isolation: Dedicated. Cost: Premium. Sector: Energy.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "GridProtection",
+      "priority_level": "Critical"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-TC-08",
+    "intent": "Thickness control on our hot strip mill drives hydraulic cylinders every 0.8 ms and needs clocks aligned to within 2 µs. One plant, isolated slice, premium tier.",
+    "scenario": "You are the process control engineer at a steel mill. Application: RemoteProcessControl. Cycle time: 0.8 ms. Sync accuracy: 2 µs. Geographic scope: Campus. Isolation: Dedicated. Cost: Premium. Sector: Industry.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RemoteProcessControl",
+      "isolation_level": "Dedicated"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-TC-09",
+    "intent": "Actuator commands at our chemical works must arrive on a fixed 1 millisecond schedule for remote process control. One site, mid-range budget.",
+    "scenario": "You are a process control engineer at a chemical plant. Application: RemoteProcessControl. Cycle time: 1 ms. Geographic scope: Campus. Cost: Balanced. Sector: Industry.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RemoteProcessControl"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-MC-03",
+    "intent": "Paramedic dispatch and live patient vitals from ambulances across the metro region. If ground networks fail, switch to low-orbit satellite in 15 s or less. Isolated slice, top budget.",
+    "scenario": "You are the EMS communications director. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 15 s. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "Hybrid",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-MC-04",
+    "intent": "Firefighters on the line have no cell towers left standing. Give incident command a regional network that runs purely over LEO satellite. Isolated, premium.",
+    "scenario": "You are the fire agency communications chief. Deployment mode: NTN_Only. NTN tier: LEO. Max failover: 30 s. Geographic scope: Regional. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "NTN_Only",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "PAR-MC-05",
+    "intent": "Our subway needs a resilient network for train control and passenger emergency call points. Ground coverage is everywhere, so leave satellite out. Citywide, isolated, premium.",
+    "scenario": "You are the metro operator network manager. Deployment mode: TN_Only. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: Transportation.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "TN_Only",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-MC-06",
+    "intent": "Evacuation and flood-warning comms for the delta: run on cell towers normally, bring in drone/HAPS relays when towers go under, and switch within 30 s. Isolated slice, moderate cost.",
+    "scenario": "You are the civil protection network planner. Deployment mode: Hybrid. NTN tier: UAV_HAPS. Max failover: 30 s. Geographic scope: Regional. Isolation: Dedicated. Cost: Balanced. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "Hybrid",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-MC-07",
+    "intent": "Rescue boats and helicopters of the coast guard need comms that use coastal towers inshore and low-orbit satellites further out, handing over in under 20 s. Isolated, premium.",
+    "scenario": "You are the coast guard communications officer. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 20 s. Geographic scope: Maritime. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "Hybrid",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-MC-08",
+    "intent": "Shutdown commands along 900 km of gas pipeline must always get through: use ground networks where they exist and fall back to LEO within a minute. Isolated slice, mid-range budget.",
+    "scenario": "You are the pipeline SCADA engineer. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 60 s. Geographic scope: Regional. Isolation: Dedicated. Cost: Balanced. Sector: Energy.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "Hybrid",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-MC-09",
+    "intent": "City emergency services need a command-and-control network. Ground infrastructure is good enough here, so no satellites. Whole city, isolated slice, high budget.",
+    "scenario": "You are the city IT director for emergency services. Deployment mode: TN_Only. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "TN_Only",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-RC-03",
+    "intent": "Our 25 cruise liners need onboard internet for passengers and staff: 100 Mbps each over flat-panel low-orbit antennas, under 100 ms delay. Shared, premium service level.",
+    "scenario": "You are the cruise line IT director. Geographic scope: Maritime. NTN tier: LEO. Min throughput: 100 Mbps. Terminal: LEO_FlatPanel. Latency budget: 100 ms. Vessel count: 25. Isolation: Shared. Cost: Premium. Sector: Entertainment.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Maritime",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "PAR-RC-04",
+    "intent": "Weather stations out on Greenland's ice cap must upload readings and allow remote maintenance at 2 Mbps. Half a second of delay is acceptable. Low-orbit satellite.",
+    "scenario": "You are the polar observation network manager. Geographic scope: Polar. NTN tier: LEO. Min throughput: 2 Mbps. Latency budget: 500 ms. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Polar",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "PAR-RC-05",
+    "intent": "Fibre ends before it reaches the informal settlements at the city's outskirts. Give each household hub 10 Mbps, under 150 ms, mixing low-orbit satellite with nearby towers. Keep it cheap.",
+    "scenario": "You are the municipal digital inclusion officer. Geographic scope: CityFringe. Deployment mode: Hybrid. NTN tier: LEO. Min throughput: 10 Mbps. Latency budget: 150 ms. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "CityFringe",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-RC-06",
+    "intent": "Medical helicopters need a data link while airborne over wilderness: 5 Mbps per aircraft, delay below 150 ms, via low-orbit satellites.",
+    "scenario": "You are the aviation operations manager for an air ambulance service. Geographic scope: Aerial. NTN tier: LEO. Min throughput: 5 Mbps. Latency budget: 150 ms. Isolation: Shared. Cost: Balanced. Sector: Transportation.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Aerial",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "PAR-RC-07",
+    "intent": "Four hundred countryside schools without wired broadband need online classes: 20 Mbps each, under 200 ms, over low-orbit satellite, on a tight budget.",
+    "scenario": "You are the education ministry connectivity lead. Geographic scope: Rural. NTN tier: LEO. Min throughput: 20 Mbps. Latency budget: 200 ms. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Rural",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "PAR-RC-08",
+    "intent": "Sixty cargo vessels send batched telemetry and mail; nothing is real-time. 2 Mbps per ship, up to 800 ms delay, reusing our geostationary terminals.",
+    "scenario": "You are the fleet IT manager for a container line. Geographic scope: Maritime. NTN tier: GEO. Min throughput: 2 Mbps. Latency budget: 800 ms. Interactive traffic: False. Vessel count: 60. Isolation: Shared. Cost: LowCost. Sector: Transportation.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Maritime",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "PAR-RC-09",
+    "intent": "Survey drones flying over national parks need telemetry links of 2 Mbps each with up to 200 ms delay. High-altitude platform relays on demand would suit us best.",
+    "scenario": "You are the operations manager for a drone survey company. Geographic scope: Aerial. NTN tier: UAV_HAPS. Min throughput: 2 Mbps. Latency budget: 200 ms. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Aerial",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "PAR-DC-03",
+    "intent": "Put trackers on 300,000 containers in the port; each sends its location every five minutes in 64 bytes and must last 5 years on battery. Shared and inexpensive.",
+    "scenario": "You are the port IoT architect. Device density: 30000/km2. Reporting interval: 300 s. Payload: 64 bytes. Battery: yes. Target lifetime: 5 years. Geographic scope: Campus. Isolation: Shared. Cost: LowCost. Sector: Transportation.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-DC-04",
+    "intent": "Hook up 20,000 sea buoys measuring water temperature and swell; hourly 120-byte reports, solar-assisted batteries lasting 5 years, over low-orbit satellite IoT at minimal cost.",
+    "scenario": "You are the oceanographic network engineer. Device density: 1/km2. Reporting interval: 3600 s. Payload: 120 bytes. Battery: yes. Target lifetime: 5 years. NTN tier: LEO. Geographic scope: Maritime. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "PAR-DC-05",
+    "intent": "Connect four million occupancy and climate-control sensors in buildings citywide. Each reports 32 bytes every quarter hour and runs 10 years on battery. Mid-range cost.",
+    "scenario": "You are the smart buildings platform lead. Device density: 20000/km2. Reporting interval: 900 s. Payload: 32 bytes. Battery: yes. Target lifetime: 10 years. Geographic scope: CityWide. Isolation: Shared. Cost: Balanced. Sector: SmartCity.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-DC-06",
+    "intent": "After the floods we dropped 50,000 sensors for water levels and building stress; 40-byte updates every 10 minutes, 2-year batteries. Use whatever towers survived plus drone/HAPS relays.",
+    "scenario": "You are the disaster monitoring engineer. Device density: 20/km2. Reporting interval: 600 s. Payload: 40 bytes. Battery: yes. Target lifetime: 2 years. Deployment mode: Hybrid. NTN tier: UAV_HAPS. Geographic scope: Regional. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-DC-07",
+    "intent": "Ten million pallet tags across the country check in every six hours with 50 bytes and last five years on battery. Cellular in towns, low-orbit satellite on rural roads.",
+    "scenario": "You are the logistics IoT lead. Device density: 50/km2. Reporting interval: 21600 s. Payload: 50 bytes. Battery: yes. Target lifetime: 5 years. Deployment mode: Hybrid. NTN tier: LEO. Geographic scope: National. Isolation: Shared. Cost: LowCost. Sector: Transportation.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "PAR-DC-08",
+    "intent": "Our tower-block district packs roughly 150k meters into each square kilometre. One 100-byte reading per day, decade-long batteries, NB-IoT ideally. Shared and cheap.",
+    "scenario": "You are the metering network architect. Device density: 150000/km2. Radio technology: NB_IoT. Reporting interval: 86400 s. Payload: 100 bytes. Battery: yes. Target lifetime: 10 years. Geographic scope: Urban. Isolation: Shared. Cost: LowCost. Sector: Energy.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "PAR-DC-09",
+    "intent": "Connect 200,000 mains-powered vibration sensors on the shop floor; each sends a 100-byte report every five minutes. Single campus.",
+    "scenario": "You are the IIoT engineer at a large manufacturing plant. Device density: 10000/km2. Reporting interval: 300 s. Payload: 100 bytes. Battery: no. Geographic scope: Campus. Isolation: Shared. Cost: Balanced. Sector: Manufacturing.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  }
+]

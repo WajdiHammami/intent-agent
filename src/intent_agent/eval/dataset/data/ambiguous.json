@@ -1,0 +1,484 @@
+[
+  {
+    "id": "AMB-TC-01",
+    "intent": "Industrial robot control for a car manufacturing plant. Real-time closed-loop control needed. Dedicated 5G slice, Premium.",
+    "scenario": "You are the OT engineer at an automotive factory. Application type: RoboticControl. Cycle time: 1 ms. Geographic scope: Campus. Cost: Premium. Sector: Manufacturing.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RoboticControl"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-TC-02",
+    "intent": "Ultra-low latency 5G slice for critical industrial automation. 1 ms cycle time, dedicated slice, campus deployment.",
+    "scenario": "You are a process control engineer. Application: RemoteProcessControl. Cycle time: 1 ms. Geographic scope: Campus. Cost: Balanced. Sector: Industry.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "cycle_time_ms": 1.0
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "EXT-TC-06",
+    "intent": "Remote surgical assistance robot: needs ultra-low latency for precision motion control. Premium budget. Campus hospital.",
+    "scenario": "You are the hospital CTO. Application: RemoteProcessControl. Cycle time: 1 ms. Geographic scope: Campus. Cost: Premium. Sector: Healthcare.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RemoteProcessControl"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-MC-01",
+    "intent": "Highly available communications network for emergency services in a metropolitan area. Dedicated slice, Premium cost.",
+    "scenario": "You are the city IT director for emergency services. Deployment mode: TN_Only. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-MC-02",
+    "intent": "Mission-critical public safety network needing satellite backup for disaster resilience. Dedicated slice, Balanced cost.",
+    "scenario": "You are the emergency services network planner. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 30 seconds. Geographic scope: Regional. Isolation: Dedicated. Cost: Balanced. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "Hybrid"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "EXT-MC-06",
+    "intent": "Coastal patrol vessels need mission-critical communications that work offshore and near shore. Must remain connected if terrestrial fails. Dedicated, Balanced.",
+    "scenario": "You are the coast guard network engineer. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 30 s. Geographic scope: Maritime. Isolation: Dedicated. Cost: Balanced. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "Hybrid",
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "AMB-RC-01",
+    "intent": "Offshore fishing fleet connectivity for 200 vessels at sea. Need at least 10 Mbps per vessel, 400 ms latency is fine.",
+    "scenario": "You are the fleet manager for a fishing company. NTN tier: LEO. Geographic scope: Maritime. Min throughput: 10 Mbps. Latency budget: 400 ms. Vessel count: 200. Isolation: Shared. Cost: Balanced. Sector: Maritime.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Maritime"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-RC-02",
+    "intent": "Remote connectivity for polar research stations. GEO satellite available. Latency of several hundred ms is fine.",
+    "scenario": "You are the IT manager for a polar research institute. NTN tier: GEO. Min throughput: 1 Mbps. Geographic scope: Polar. Latency budget: 600 ms. Interactive traffic: False. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Polar"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "EXT-RC-06",
+    "intent": "Deep-sea research submersibles need to relay sensor data via support vessel to shore. GEO satellite on the vessel, data-only (no interactive traffic), latency up to 600 ms acceptable.",
+    "scenario": "You are the oceanographic research IT manager. NTN tier: GEO. Geographic scope: Maritime. Min throughput: 2 Mbps. Latency budget: 600 ms. Interactive traffic: False. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Maritime",
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-DC-01",
+    "intent": "Smart city IoT for parking and waste bin sensors. Small payloads, hourly reporting, battery-powered, 7-year target. Minimal cost.",
+    "scenario": "You are the smart city project manager. Device density: 3000/km2. Reporting interval: 3600 s. Payload: 30 bytes. Battery: yes. Target lifetime: 7 years. Geographic scope: CityWide. Isolation: Shared. Cost: LowCost. Sector: SmartCity.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-DC-02",
+    "intent": "Agricultural sensor network for 500,000 soil and weather monitoring devices across a farming region. Payloads of 50 bytes, battery-powered, 5-year lifetime.",
+    "scenario": "You are the IoT engineer for a smart farming platform. Reporting interval: 900 s. Device density: 200/km2. Payload: 50 bytes. Battery: yes. Target lifetime: 5 years. Geographic scope: Regional. Isolation: Shared. Cost: LowCost. Sector: Agriculture.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "EXT-MAC-06",
+    "intent": "Bridge health monitoring across a national highway network: vibration and strain sensors on 500 bridges, reporting every minute. Need minimal cost and wide coverage.",
+    "scenario": "You are the civil infrastructure IoT engineer. Device density: 1000/km2. Reporting interval: 60 s. Payload: 80 bytes. Battery: yes. Target lifetime: 8 years. Geographic scope: National. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-TC-03",
+    "intent": "Low-latency wireless for the robots in our warehouse. It has to be really fast and reliable.",
+    "scenario": "You are the warehouse automation manager. Application: RoboticControl. Cycle time: 2 ms. Geographic scope: Campus. Isolation: Dedicated. Cost: Balanced. Sector: Transportation.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RoboticControl"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-TC-04",
+    "intent": "Protection signalling between two of our substations. It must be very fast. Dedicated slice.",
+    "scenario": "You are a transmission protection engineer. Application: GridProtection. Trip time: 4 ms. Cycle time: 2 ms. Geographic scope: Regional. Isolation: Dedicated. Cost: Premium. Sector: Energy.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "GridProtection"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-TC-05",
+    "intent": "Connected vehicles in our city need instant coordination at junctions.",
+    "scenario": "You are the city mobility officer. Application: V2X. V2X scenario: Intersection. Cycle time: 2 ms. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: Automotive.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "V2X"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-TC-06",
+    "intent": "Deterministic 1 ms control for our production line. Budget to be decided.",
+    "scenario": "You are the plant controls engineer. Application: RemoteProcessControl. Cycle time: 1 ms. Geographic scope: Campus. Isolation: Dedicated. Cost: Balanced. Sector: Manufacturing.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "cycle_time_ms": 1.0
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-TC-07",
+    "intent": "Tele-operated excavators at a remote quarry need real-time control. Terrestrial coverage there is patchy.",
+    "scenario": "You are the quarry automation engineer. Application: RoboticControl. Cycle time: 3 ms. Deployment mode: Hybrid. NTN tier: LEO. Geographic scope: Campus. Isolation: Dedicated. Cost: Premium. Sector: Industry.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RoboticControl"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "AMB-TC-08",
+    "intent": "Real-time motion sync for the stage robotics at our concert venue. As fast as possible.",
+    "scenario": "You are the venue technical director. Application: RoboticControl. Cycle time: 2 ms. Geographic scope: Campus. Isolation: Dedicated. Cost: Balanced. Sector: Entertainment.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "application_type": "RoboticControl"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-TC-09",
+    "intent": "We need a sub-millisecond loop for a lab automation cell.",
+    "scenario": "You are the lab automation engineer. Application: RoboticControl. Cycle time: 0.5 ms. Sync accuracy: 1 µs. Geographic scope: Campus. Isolation: Dedicated. Cost: Premium. Sector: Industry.",
+    "expected_class": "TimeCritical",
+    "expected_slots": {
+      "cycle_time_ms": 0.5
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-MC-03",
+    "intent": "Reliable communications for our first responders that will not go down.",
+    "scenario": "You are the city emergency management director. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 30 s. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "AMB-MC-04",
+    "intent": "The port authority's vessel traffic service needs an always-on network with satellite backup.",
+    "scenario": "You are the port authority IT manager. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 15 s. Geographic scope: Regional. Isolation: Dedicated. Cost: Balanced. Sector: Transportation.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "deployment_mode": "Hybrid"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "AMB-MC-05",
+    "intent": "Critical communications for an earthquake-hit region. Whatever works.",
+    "scenario": "You are the national disaster response coordinator. Deployment mode: Hybrid. NTN tier: UAV_HAPS. Max failover: 30 s. Geographic scope: Regional. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "AMB-MC-06",
+    "intent": "Highly available network for hospital operations across the city. Satellite option still to be decided.",
+    "scenario": "You are the health network CIO. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 20 s. Geographic scope: CityWide. Isolation: Dedicated. Cost: Premium. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "AMB-MC-07",
+    "intent": "Safety alert system for our mine. It is a remote site and the system must stay up.",
+    "scenario": "You are the mine safety manager. Deployment mode: NTN_Only. NTN tier: LEO. Max failover: 60 s. Geographic scope: Rural. Isolation: Dedicated. Cost: Balanced. Sector: Industry.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-MC-08",
+    "intent": "Railway level-crossing safety alerts need five-nines availability.",
+    "scenario": "You are the rail infrastructure engineer. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 10 s. Geographic scope: Regional. Isolation: Dedicated. Cost: Balanced. Sector: Transportation.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "AMB-MC-09",
+    "intent": "Disaster-recovery comms for the municipal government. As cheap as possible, but resilient.",
+    "scenario": "You are the municipal continuity planner. Deployment mode: Hybrid. NTN tier: LEO. Max failover: 60 s. Geographic scope: CityWide. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "MissionCritical",
+    "expected_slots": {
+      "priority_level": "High"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Disaster",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "AMB-RC-03",
+    "intent": "Internet for our ships.",
+    "scenario": "You are the shipping company IT manager. Geographic scope: Maritime. NTN tier: LEO. Min throughput: 10 Mbps. Latency budget: 400 ms. Vessel count: 40. Isolation: Shared. Cost: Balanced. Sector: Maritime.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Maritime"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-RC-04",
+    "intent": "Connectivity for remote farms out past where the fibre ends.",
+    "scenario": "You are the agricultural cooperative manager. Geographic scope: Rural. NTN tier: LEO. Min throughput: 5 Mbps. Latency budget: 300 ms. Isolation: Shared. Cost: LowCost. Sector: Agriculture.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-RC-05",
+    "intent": "Satellite link for a research base, fast enough for video.",
+    "scenario": "You are the research station IT officer. Geographic scope: Polar. NTN tier: LEO. Min throughput: 10 Mbps. Latency budget: 200 ms. Interactive traffic: True. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-RC-06",
+    "intent": "Connectivity for drones doing inspections far from any town.",
+    "scenario": "You are the inspection drone fleet manager. Geographic scope: Aerial. NTN tier: LEO. Min throughput: 3 Mbps. Latency budget: 250 ms. Isolation: Shared. Cost: Balanced. Sector: Energy.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Aerial"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-RC-07",
+    "intent": "Broadband for mountain villages. Some bandwidth, decent latency.",
+    "scenario": "You are the regional development officer. Geographic scope: Rural. NTN tier: LEO. Min throughput: 8 Mbps. Latency budget: 300 ms. Isolation: Shared. Cost: LowCost. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Rural"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-RC-08",
+    "intent": "Cheap connectivity for our offshore platforms.",
+    "scenario": "You are the offshore operations IT lead. Geographic scope: Maritime. NTN tier: GEO. Min throughput: 2 Mbps. Latency budget: 700 ms. Interactive traffic: False. Vessel count: 12. Isolation: Shared. Cost: LowCost. Sector: Energy.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "geographic_scope": "Maritime"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Maritime",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-RC-09",
+    "intent": "Coverage for a new housing development outside the city where the operators have not built yet.",
+    "scenario": "You are the housing developer's infrastructure manager. Geographic scope: CityFringe. Deployment mode: Hybrid. NTN tier: LEO. Min throughput: 25 Mbps. Latency budget: 100 ms. Isolation: Shared. Cost: Balanced. Sector: Government.",
+    "expected_class": "RemoteConnectivity",
+    "expected_slots": {
+      "priority_level": "Normal"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "AMB-DC-03",
+    "intent": "Lots of sensors across our farm network. Low cost.",
+    "scenario": "You are the farm technology manager. Device density: 50/km2. Reporting interval: 1800 s. Payload: 40 bytes. Battery: yes. Target lifetime: 5 years. NTN tier: LEO. Geographic scope: Rural. Isolation: Shared. Cost: LowCost. Sector: Agriculture.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-DC-04",
+    "intent": "Track our shipping containers everywhere they go, cheaply.",
+    "scenario": "You are the logistics visibility lead. Device density: 10/km2. Reporting interval: 3600 s. Payload: 48 bytes. Battery: yes. Target lifetime: 5 years. Deployment mode: Hybrid. NTN tier: LEO. Geographic scope: National. Isolation: Shared. Cost: LowCost. Sector: Transportation.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "Hybrid"
+  },
+  {
+    "id": "AMB-DC-05",
+    "intent": "Environmental sensors around the city, reporting regularly.",
+    "scenario": "You are the city environment officer. Device density: 500/km2. Reporting interval: 600 s. Payload: 60 bytes. Battery: yes. Target lifetime: 5 years. Geographic scope: CityWide. Isolation: Shared. Cost: LowCost. Sector: SmartCity.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-DC-06",
+    "intent": "Asset tags for our factory. Not sure yet whether they will be mains or battery powered.",
+    "scenario": "You are the factory asset manager. Device density: 8000/km2. Reporting interval: 120 s. Payload: 32 bytes. Battery: yes. Target lifetime: 3 years. Geographic scope: Campus. Isolation: Shared. Cost: Balanced. Sector: Manufacturing.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-DC-07",
+    "intent": "Smart meters for a district, with frequent readings.",
+    "scenario": "You are the district energy manager. Device density: 3000/km2. Reporting interval: 300 s. Payload: 80 bytes. Battery: yes. Target lifetime: 8 years. Geographic scope: Urban. Isolation: Shared. Cost: LowCost. Sector: Energy.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "Urban",
+    "gold_deployment_mode": "TN_Only"
+  },
+  {
+    "id": "AMB-DC-08",
+    "intent": "A sensor network along a remote pipeline.",
+    "scenario": "You are the pipeline integrity engineer. Device density: 5/km2. Reporting interval: 600 s. Payload: 40 bytes. Battery: yes. Target lifetime: 7 years. NTN tier: LEO. Geographic scope: Regional. Isolation: Shared. Cost: LowCost. Sector: Energy.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  },
+  {
+    "id": "AMB-DC-09",
+    "intent": "Wearable trackers for cattle on open grazing land. They should last as long as possible.",
+    "scenario": "You are the livestock technology lead. Device density: 30/km2. Reporting interval: 7200 s. Payload: 24 bytes. Battery: yes. Target lifetime: 4 years. NTN tier: LEO. Geographic scope: Rural. Isolation: Shared. Cost: LowCost. Sector: Agriculture.",
+    "expected_class": "MassiveConnectivity",
+    "expected_slots": {
+      "priority_level": "Low"
+    },
+    "expected_conflicts": [],
+    "scenario_label": "RuralRemote",
+    "gold_deployment_mode": "NTN_Only"
+  }
+]
