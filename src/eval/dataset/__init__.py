@@ -13,13 +13,14 @@ from eval.dataset.schema import (
     WELL_FORMED_TYPES,
     EvalSample,
 )
-from eval.dataset.selection import resolve_class, select
+from eval.dataset.selection import dev_test_split, resolve_class, select
 
 ALL_SAMPLES: list[EvalSample] = load_samples()
 WELL_FORMED: list[EvalSample] = select(ALL_SAMPLES, adversarial=False)
 ADVERSARIAL: list[EvalSample] = select(ALL_SAMPLES, adversarial=True)
 CONTRADICTORY_SUBSET: list[EvalSample] = select(ALL_SAMPLES, rtype="contradictory")
 NON_CONTRADICTORY: list[EvalSample] = [s for s in ALL_SAMPLES if s.request_type != "contradictory"]
+DEV, TEST = dev_test_split(ALL_SAMPLES)   # 100 / 100, stratified — see dev_test_split
 
 
 def get_sample(sample_id: str) -> EvalSample:
@@ -31,7 +32,7 @@ def get_sample(sample_id: str) -> EvalSample:
 
 __all__ = [
     "ADVERSARIAL", "ADVERSARIAL_TYPES", "ALL_SAMPLES", "CLASS_ABBREVIATIONS",
-    "CONTRADICTORY_SUBSET", "DATA_DIR", "DatasetError", "EvalSample", "NON_CONTRADICTORY",
+    "CONTRADICTORY_SUBSET", "DATA_DIR", "DEV", "TEST", "dev_test_split", "DatasetError", "EvalSample", "NON_CONTRADICTORY",
     "REQUEST_TYPES", "SERVICE_CLASSES", "WELL_FORMED", "WELL_FORMED_TYPES", "get_sample",
     "load_samples", "resolve_class", "select", "validate",
 ]

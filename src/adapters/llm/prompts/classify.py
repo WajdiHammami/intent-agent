@@ -4,25 +4,28 @@ from langchain_core.prompts import ChatPromptTemplate
 
 CLASS_DESCRIPTIONS = {
     "TimeCritical": (
-        "Sub-millisecond industrial/vehicular control. "
-        "Latency ≤1 ms, reliability 99.9999%. "
-        "Robotics, grid protection relays, V2X. Always dedicated slice."
+        "Real-time closed-loop CONTROL of machines, vehicles or grid equipment, with "
+        "cycle or trip times of about 1–5 ms (robots, cranes, actuators, protection "
+        "relays, V2X coordination, remote/teleoperated machinery). "
+        "Latency ≤1 ms, reliability 99.9999%. Always a dedicated slice."
     ),
     "MissionCritical": (
-        "Resilience-first connectivity where availability matters most. "
-        "Latency ≤10 ms, availability 99.999%. "
-        "Public safety, emergency response, critical infrastructure. "
-        "Mandatory TN/NTN fallback support."
+        "Communications for PEOPLE and OPERATIONS that must stay up: public safety, "
+        "emergency and disaster response, command and control, critical-infrastructure "
+        "monitoring that triggers safety actions. Availability and TN/NTN fallback "
+        "matter most. Latency ≤10 ms, availability 99.999%."
     ),
     "RemoteConnectivity": (
-        "NTN-primary (satellite/UAV) coverage for areas without terrestrial networks. "
-        "Latency ≤500 ms, availability 99.9%. "
-        "Maritime, rural, aerial, polar, city fringe."
+        "General BROADBAND or data access for people or sites (internet, video, "
+        "telemetry uplinks, crew welfare) where terrestrial networks are missing — "
+        "ships, rural villages, polar stations, aircraft, city fringe. Sized by "
+        "throughput per site or vessel. Latency ≤500 ms, availability 99.9%."
     ),
     "MassiveConnectivity": (
-        "Massive numbers of low-power, low-rate IoT devices. "
-        "Density ≥10⁶ dev/km², throughput 1 Kbps/device, latency tolerant. "
-        "Smart metering, industrial sensors, precision agriculture."
+        "LARGE NUMBERS OF DEVICES — sensors, meters, trackers, tags, buoys — each "
+        "sending small periodic reports, usually battery-powered and latency "
+        "tolerant. Up to 10⁶ devices/km². Smart metering, environmental and "
+        "industrial sensing, asset tracking, agriculture."
     ),
 }
 
@@ -30,6 +33,10 @@ PROMPT = ChatPromptTemplate.from_messages([
     ("system",
      "You are a 5G/6G service class classifier. "
      "Given a natural-language service intent, choose the single most appropriate class. "
+     "Decide by WHAT the service does — control loops, mission-critical operations, "
+     "broadband access, or many small devices — not by WHERE it runs: being remote, at "
+     "sea, in a disaster area or on satellite does not by itself make a request "
+     "RemoteConnectivity. "
      "Respond with a JSON object only — no prose, no markdown fences."),
     ("human",
      'Service intent: "{intent}"\n\n'

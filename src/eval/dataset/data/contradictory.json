@@ -33,7 +33,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Maritime",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Maritime",
     "gold_deployment_mode": "NTN_Only"
@@ -241,7 +241,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Maritime",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Maritime",
     "gold_deployment_mode": "NTN_Only"
@@ -254,7 +254,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Maritime",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Maritime",
     "gold_deployment_mode": "NTN_Only"
@@ -267,7 +267,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Maritime",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Maritime",
     "gold_deployment_mode": "Hybrid"
@@ -280,7 +280,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Maritime",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Maritime",
     "gold_deployment_mode": "Hybrid"
@@ -293,7 +293,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Maritime",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Maritime",
     "gold_deployment_mode": "NTN_Only"
@@ -410,7 +410,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "Hybrid"
@@ -423,7 +423,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "Hybrid"
@@ -436,7 +436,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "Hybrid"
@@ -449,7 +449,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "Hybrid"
@@ -462,7 +462,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "Hybrid"
@@ -475,7 +475,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "Hybrid"
@@ -488,7 +488,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "NTN_Only"
@@ -501,7 +501,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "Hybrid"
@@ -514,7 +514,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "Hybrid"
@@ -644,7 +644,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Maritime",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Maritime",
     "gold_deployment_mode": "Hybrid"
@@ -657,7 +657,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Maritime",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Maritime",
     "gold_deployment_mode": "NTN_Only"
@@ -670,7 +670,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "NTN_Only"
@@ -683,7 +683,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "Hybrid"
@@ -748,7 +748,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Maritime",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Maritime",
     "gold_deployment_mode": "NTN_Only"
@@ -761,7 +761,7 @@
     "expected_slots": {},
     "expected_conflicts": [
       "Disaster",
-      "TN_Only"
+      "TN-only"
     ],
     "scenario_label": "Disaster",
     "gold_deployment_mode": "Hybrid"

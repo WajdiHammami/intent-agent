@@ -13,10 +13,12 @@ An LLM is great at *reading* an informal request ("we need real-time control for
 60 welding robots on one factory floor, premium budget"). It is unreliable at
 *deciding* whether that request is complete, self-consistent, and policy-valid.
 This project keeps the LLM on language tasks and hands every decision to a small,
-auditable **knowledge graph**. The payoff, measured on the original 72-sample
-labeled benchmark:
-**+20 points of policy validity and +35 points of contradiction detection versus
-an LLM-only pipeline, while asking 3.8× fewer clarifying questions.**
+auditable **knowledge graph**. The payoff, measured on a 200-intent labeled
+benchmark (half of it adversarial) against an LLM-only pipeline using the same
+model: **98.5% vs 18.5% policy-valid profiles, 0.7% vs 95.7% false conflict
+alarms, and 2.6 vs 10.2 clarifying turns** (see [Results](#results)).
+
+![A contradictory request: the knowledge graph flags the conflict, the user fixes it in one answer, and every label check passes](assets/demo-conflict.svg)
 
 It's the reference implementation behind a research paper on 6G network
 orchestration, but the pattern — *LLM for understanding, symbolic layer for
@@ -56,8 +58,7 @@ Natural-language request
         │
         ▼
 ┌─────────────────────┐
-│  S1 · Classify      │   LLM — pick 1 of 4 service classes (a soft guess the
-│                     │         graph can later revise or escalate)
+│  S1 · Classify      │   LLM — pick 1 of 4 service classes
 ├─────────────────────┤
 │  S2 · Extract       │   LLM — pull whatever slot values the text already gives
 ├─────────────────────┤
@@ -99,13 +100,21 @@ not the model — rules on completeness and consistency, conflict detection is
 deterministic, and a dialogue only terminates (Algorithm 1) when every mandatory
 slot is filled and no conflict is left open.
 
-**Conflict resolution is validated, not trusted.** The question offers only the
-fields the user may change — never values the service class fixes, such as
+**Every value is validated, not trusted.** Whatever the LLM extracts or parses
+is checked against the ontology's vocabulary for that field before it enters
+the profile: an extracted value the ontology doesn't know is dropped and asked
+for instead; an unusable answer is asked again once. Values named by a conflict
+rule stay accepted even where a class doesn't offer them (GEO for a
+time-critical service), so the contradiction is flagged rather than silently
+erased.
+
+Conflict resolution works the same way. The question offers only the fields
+the user may change — never values the service class fixes, such as
 `priority_level` — together with their allowed values. The LLM parses the
-answer into a *(field, value)* choice, the value is checked against the field's
-definition, and only a valid change resolves the conflict. A vague answer
-("keep it as is"), a value that doesn't fit the field, or a non-change leaves
-the conflict open and the question is asked again, up to the turn limit.
+answer into a *(field, value)* choice, the value is checked, and only a valid
+change resolves the conflict. A vague answer ("keep it as is"), a value that
+doesn't fit the field, or a non-change leaves the conflict open and the
+question is asked again, up to the turn limit.
 
 <details>
 <summary><b>Concrete example of graph-driven conflict detection</b></summary>
@@ -132,40 +141,84 @@ the time — which is exactly what the Pure-LLM baseline below measures.
 
 ## Results
 
-> **Note:** the numbers below were measured with the previous setup: the
-> original 72-sample benchmark (18 per class) and its 40-sample contradictory
-> subset, Llama-3-8B-Instruct via llama.cpp, and before conflict resolution was
-> validated. Since then the benchmark has grown to 200 intents (see
-> [Dataset & evaluation design](#dataset--evaluation-design)), the default model
-> is Llama 3.1 8B on Ollama, and a conflict only counts as resolved when the
-> user's change is valid. A full re-run on the new setup is in progress and will
-> replace these numbers.
+All numbers: Llama 3.1 8B (4-bit) on Ollama, temperature 0, **zero-shot — no
+fine-tuning**, the full 200-intent benchmark, a simulated user answering the
+clarifying questions, max 12 turns per dialogue. The **knowledge graph** and the
+**LLM-only** pipelines use the same classifier, extractor and simulated user.
+In the LLM-only pipeline, the LLM also decides which fields are missing, which
+values conflict and when the profile is done.
 
-Full pipeline over the 72-sample labeled benchmark (18 per class),
-Llama-3-8B-Instruct Q4_K_M, **zero-shot — no fine-tuning**:
+| | Knowledge graph | LLM-only |
+|---|:--:|:--:|
+| Policy-valid profiles (M7)                       | **98.5%**  | 18.5% |
+| Dialogues that terminate properly (M6)           | **98.5%**  | 43.5% |
+| Contradictory intents flagged (M8)               | 88.3%      | 100%  |
+| Expected conflicts found (M5)                    | **83.3%**  | 64.2% |
+| False alarms on non-contradictory intents        | **0.7%**   | 95.7% |
+| Avg. clarifying turns (M3)                       | **2.6**    | 10.2  |
+| Classification accuracy (M1)                     | 96.0%      | 96.0% |
 
-| Metric | Overall | TC | MC | RC | MaC |
-|---|:--:|:--:|:--:|:--:|:--:|
-| Classification accuracy      | **90.3%** | 100% | 94.4% | 100% | 66.7% |
-| Policy validity rate         | **95.8%** | 83.3% | 100% | 100% | 100% |
-| Avg. clarification turns     | **0.57**  | 0.83 | 0.17 | 0.50 | 0.78 |
-| Profile completeness         | 99.3% | | | | |
-| Contradiction detection acc. | 83.3% | | | | |
+The LLM-only pipeline flags *every* contradictory intent only because it flags
+almost everything: 96% of well-formed requests also get a conflict, and most
+dialogues run to the turn limit without a valid profile. The knowledge graph
+finds more of the *right* conflicts, almost never raises a false one, and
+finishes in a quarter of the turns. Classification is the same in both,
+because the LLM does it in both: the graph's value is in the decisions that
+come after.
 
-**The knowledge graph vs. an LLM-only baseline** — same classifier and extractor,
-but the graph's reasoning replaced by the LLM deciding completeness and conflicts
-from its own knowledge (40-sample contradictory subset):
+**Knowledge-graph pipeline by request type**
 
-| | Policy validity | Contradiction detection | Clarifying questions |
+| | n | Classification | Policy-valid | Avg. turns |
+|---|:--:|:--:|:--:|:--:|
+| Seed           | 60 | 98.3% | 98.3%  | 1.2 |
+| Paraphrased    | 40 | 100%  | 100%   | 1.8 |
+| Ambiguous      | 40 | 97.5% | 97.5%  | 3.1 |
+| Contradictory  | 60 | 90.0% | 98.3%  | 4.2 |
+
+By class, classification is 96–100%: TimeCritical 96%, MissionCritical 94%,
+RemoteConnectivity 94%, MassiveConnectivity 100%.
+
+**Ablation** (60 contradictory intents) — what each component contributes:
+
+| Variant | Contradictions flagged | Policy-valid | Avg. turns |
 |---|:--:|:--:|:--:|
-| LLM-only            | baseline     | baseline      | baseline |
-| **+ Knowledge graph** | **+20 pts** | **+35 pts**   | **3.8× fewer** |
+| **Full system**                             | **88.3%** | **98.3%** | 4.2 |
+| No extraction (every slot asked one by one) | 10.0%     | 91.7%     | 8.0 |
+| No knowledge-graph conflict rules           | 0.0%      | 98.3%     | 3.2 |
+| LLM detects conflicts instead of the graph  | 100%      | 0.0%      | 12 (limit) |
 
-The graph doesn't help the model *classify* better — it makes the downstream
-decisions **reliable and cheap**. That's the whole thesis, and it's measured, not
-asserted.
+Swapping only the conflict check for the LLM is the clearest result. It
+"detects" everything, about 9 conflicts per dialogue, and accepts no fix, so
+no dialogue ends with a valid profile. Without extraction, the request
+sentence is never parsed into values; the simulated user, asked field by
+field, rarely restates the contradiction, so the rules have little to check.
 
-Reproduce: `intent-agent bench eval` and `intent-agent bench pure-llm --contradictory-only`.
+**Coverage sweep:** contradictions flagged rise with the share of conflict
+rules kept (0% → 0.0%, 50% → 43.3%, 100% → 88.3%), with policy validity
+unchanged. Detection comes from the rules, not from the model.
+
+**How the numbers got here.** The first run on this setup scored 61.7% on
+contradictions and a suspicious 100% policy validity: the extractor was
+"correcting" contradictory requests and inventing missing values, so few
+questions were asked. Fixes were made in steps, each measured:
+a prompt that records what the user said (61.7% → 85.0% contradictions
+flagged), validation of every value against the ontology (so invalid profiles
+stop counting as valid), and class definitions based on what a service does
+rather than where it runs. That last one was tuned on a dev half of the
+benchmark and checked on the held-out test half: 82% → 97% classification,
+MassiveConnectivity 13/25 → 25/25.
+
+**Limits.** Deployment mode matches the label in 81.5% of dialogues; most
+misses choose Hybrid where the label expects a single network. One run per
+configuration. The simulated user is the same 8B
+model, which is optimistic. The benchmark is self-built, so the numbers show
+how the pipeline variants compare with each other, not how they compare with
+other published work.
+
+Reproduce: `intent-agent bench eval`, `intent-agent bench pure-llm`,
+`intent-agent bench ablation --type contradictory`,
+`intent-agent bench sweep --fractions 0 50 100` (about 3½ hours in total on a
+laptop RTX 4070).
 
 ---
 
@@ -311,7 +364,7 @@ passes 400 lines.
 **Run the tests**
 
 ```bash
-pytest                    # 290 tests: unit + end-to-end (live Ollama tests skip if unavailable)
+pytest                    # 309 tests: unit + end-to-end (live Ollama tests skip if unavailable)
 pytest tests/unit         # fast, no model
 pytest -m ollama          # only the tests against a real Ollama server
 ```
@@ -342,9 +395,14 @@ RuralRemote, Disaster, Maritime).
 | `WELL_FORMED` / `ADVERSARIAL` | 100 / 100 | Seed + paraphrased / ambiguous + contradictory |
 | `CONTRADICTORY_SUBSET` | 60 | Every conflict-rule type — `bench pure-llm`, `bench sweep` |
 | `NON_CONTRADICTORY` | 140 | Everything except the contradictory intents |
+| `DEV` / `TEST` | 100 / 100 | Stratified split (class × type) — develop prompts on dev, report on test |
 
 The loader validates the files (unique ids, known classes, conflicts only on
-contradictory samples) and the test suite checks the class × type balance.
+contradictory samples) and the test suite checks the class × type balance and
+that every expected conflict keyword can actually match a rule message.
+
+Prompt changes are developed on `DEV` only and judged on `TEST`, so an
+improvement isn't tuned on the numbers it is reported with.
 
 Every sample carries a ground-truth class, an expected slot subset, and (for
 contradictory samples) the conflict that *should* be caught. **Labels are

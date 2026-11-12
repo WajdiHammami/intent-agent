@@ -73,3 +73,23 @@ def test_loader_reads_a_custom_directory(tmp_path):
 def test_validate_rejects_broken_data(bad):
     with pytest.raises(DatasetError):
         validate(bad)
+
+
+def test_every_conflict_keyword_can_match_a_kg_message():
+    """A label keyword that appears in no conflict message can never be 'detected' (M5)."""
+    from core.knowledge import KnowledgeGraph
+    kg = KnowledgeGraph()
+    messages = [r.message.lower() for c in kg.all_class_ids() for r in kg.conflict_rules(c)]
+    for s in CONTRADICTORY_SUBSET:
+        for kw in s.expected_conflicts:
+            assert any(kw.lower() in m for m in messages), f"{s.id}: {kw!r} matches no rule message"
+
+
+def test_dev_test_split_is_stratified_and_disjoint():
+    from eval.dataset import DEV, TEST
+    assert len(DEV) == len(TEST) == 100
+    assert not {s.id for s in DEV} & {s.id for s in TEST}
+    for split in (DEV, TEST):
+        counts = Counter((s.expected_class, s.request_type) for s in split)
+        assert all(n in (5, 7, 8) for n in counts.values())   # half of 10 / 15 per group
+        assert len(counts) == 16

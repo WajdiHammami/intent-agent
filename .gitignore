@@ -24,3 +24,6 @@ Thumbs.db
 results/
 .pytest_cache/
 profile.json
+
+# Personal notes (local only)
+docs/

@@ -22,7 +22,7 @@ def test_extract_prompt_describes_enum_options_and_units():
     unit_slot = RequiresParameter(field="cycle_time_ms", dtype="float", question="Cycle?", unit="ms")
     defs = prompts.extract.format_slot_definitions([SLOT, unit_slot])
     assert "options: ['LowCost', 'Balanced', 'Premium']" in defs and "unit: ms" in defs
-    assert '{"geographic_scope": "Campus"}' in _text(prompts.extract.PROMPT, intent="x", slot_defs=defs)
+    assert "Leave out every slot the intent does not mention" in _text(prompts.extract.PROMPT, intent="x", slot_defs=defs)
 
 
 def test_parse_answer_type_hints():

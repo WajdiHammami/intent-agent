@@ -42,6 +42,17 @@ def test_aggregate_and_breakdowns(kg):
     assert agg.to_dict()["M1_classification_accuracy"] == 1.0
 
 
+def test_false_alarms_are_not_credited_to_m5(kg):
+    from dataclasses import replace
+    clean = replace(evaluate_sample(*_run("SEED-TC-01"), kg), detected_conflicts=0)
+    hit = evaluate_sample(*_run("CF-01", extracted={"isolation_level": "Dedicated", "cost_profile": "LowCost"}), kg)
+    noisy = replace(clean, detected_conflicts=5)          # 5 conflicts where none expected
+    agg = aggregate([noisy, hit])
+    assert agg.overall_conflict_detection_rate == 1.0      # not (5 + 2) / 2
+    assert agg.false_alarm_rate == 1.0
+    assert aggregate([clean, hit]).false_alarm_rate == 0.0
+
+
 def test_aggregate_of_nothing_is_an_error():
     with pytest.raises(ValueError):
         aggregate([])
@@ -61,3 +72,12 @@ def test_label_checks(kg):
     checks = {c.name: c for c in label_checks(s, run, evaluate_sample(s, run, kg))}
     assert checks["class"].passed and checks["conflict detected"].passed
     assert "deployment mode" in checks and "policy valid" in checks
+
+
+def test_an_invalid_value_makes_the_profile_policy_invalid(kg):
+    from models.dialogue import SlotValue
+    s, run = _run("SEED-TC-01")
+    assert evaluate_sample(s, run, kg).policy_valid
+    run.state.satisfied["cost_profile"] = SlotValue("cost_profile", "Maritime", "user_provided", "high")
+    m = evaluate_sample(s, run, kg)
+    assert m.invalid_values == 1 and not m.policy_valid

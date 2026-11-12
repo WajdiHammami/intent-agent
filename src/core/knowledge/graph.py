@@ -64,6 +64,14 @@ class KnowledgeGraph:
         self._classes: dict[str, ServiceClassNode] = {
             c.id: c for c in (ALL_CLASSES if classes is None else classes)
         }
+        self._vocabulary = None
+
+    def vocabulary(self):
+        """The accepted values per field (built once). See core.knowledge.vocabulary."""
+        if self._vocabulary is None:
+            from core.knowledge.vocabulary import FieldVocabulary
+            self._vocabulary = FieldVocabulary(self)
+        return self._vocabulary
 
     # ── Class access ──────────────────────────────────────────────────────────
 

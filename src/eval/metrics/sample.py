@@ -48,7 +48,10 @@ class SampleResult:
     proper_termination: bool          # True = Algorithm 1, False = turn limit
 
     # M7
-    policy_valid: bool                # proper_termination AND profile_completeness == 1.0
+    policy_valid: bool                # proper termination, complete, and every value accepted
+
+    # values in the final profile the ontology does not accept (counted against M7)
+    invalid_values: int
 
     # Extras
     request_type: str                 # seed | paraphrased | ambiguous | contradictory
@@ -70,6 +73,7 @@ class SampleResult:
             "conflict_detection_rate": self.conflict_detection_rate,
             "proper_termination": self.proper_termination,
             "policy_valid": self.policy_valid,
+            "invalid_values": self.invalid_values,
             "detected_conflicts": self.detected_conflicts,
             "expected_conflicts": self.expected_conflicts,
         }
@@ -132,8 +136,10 @@ def compute_sample_metrics(
     except Exception:
         proper_termination = False
 
-    # M7 — policy validity
-    policy_valid = proper_termination and profile_completeness >= 1.0
+    # M7 — policy validity: terminated properly, complete, and no value the
+    # ontology rejects (a profile filled with invented options is not valid)
+    invalid = kg.vocabulary().invalid_fields(state.satisfied)
+    policy_valid = proper_termination and profile_completeness >= 1.0 and not invalid
 
     return SampleResult(
         sample_id=sample_id,
@@ -149,6 +155,7 @@ def compute_sample_metrics(
         conflict_detection_rate=round(conflict_detection_rate, 3),
         proper_termination=proper_termination,
         policy_valid=policy_valid,
+        invalid_values=len(invalid),
         request_type=request_type,
         mandatory_filled=mandatory_filled,
         mandatory_total=mandatory_total,

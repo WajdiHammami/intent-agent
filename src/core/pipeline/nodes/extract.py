@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import logging
 
+from core.knowledge.values import InvalidValue
 from core.pipeline.context import PipelineContext
 from core.pipeline.state import PipelineState
 from models.dialogue import DialogueState, SingleClass, SlotValue
@@ -43,9 +44,16 @@ class ExtractNode:
             f: SlotValue(field=f, value=v, source="implied", confidence="high")
             for f, v in kg.get_implied_fields(class_id).items()
         }
+        vocabulary = kg.vocabulary()
         for f, v in extracted.items():
-            if v is not None:
-                satisfied[f] = SlotValue(field=f, value=v, source="extracted", confidence="high")
+            if v is None:
+                continue
+            try:
+                value = vocabulary.coerce(f, v)
+            except InvalidValue as exc:   # not a value the ontology accepts → ask instead
+                log.info("[S2] Dropped extracted %s=%r (%s)", f, v, exc)
+                continue
+            satisfied[f] = SlotValue(field=f, value=value, source="extracted", confidence="high")
 
         missing = [f for f in kg.init_missing(class_id) if f not in satisfied]
         if "vertical_domain" not in satisfied:

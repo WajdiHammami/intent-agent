@@ -17,6 +17,7 @@ METRIC_ROWS: list[tuple[str, str, bool]] = [
     ("M6_proper_termination_rate", "M6  Proper Termination Rate", True),
     ("M7_policy_validity_rate", "M7  Policy Validity Rate", True),
     ("M8_contradiction_detection_accuracy", "M8  Contradiction Det. Acc.", True),
+    ("false_alarm_rate", "    False alarms (non-contradictory)", True),
 ]
 
 
@@ -96,6 +97,7 @@ def print_results_table(results: list[SampleResult], agg: AggregateMetrics) -> N
     print(f"\n{'AGGREGATE — Step 3 (Policy & Contradiction Metrics)'}")
     print(f"  M7  Policy Validity Rate        : {agg.policy_validity_rate:.1%}")
     print(f"  M8  Contradiction Det. Accuracy : {agg.contradiction_detection_accuracy:.1%}  (contradictory samples only)")
+    print(f"      False Alarm Rate            : {agg.false_alarm_rate:.1%}  (non-contradictory samples raising a conflict)")
 
     # ── Per-request-type breakdown ────────────────────────────────────────────
     print(f"\n{'Per-request-type breakdown':}")

@@ -49,6 +49,23 @@ def test_extract_merges_implied_and_extracted_values(make_ctx):
     assert "cost_profile" not in state.missing
 
 
+def test_extract_drops_values_the_ontology_rejects(make_ctx):
+    llm = ScriptedLanguageModel(extracted={"vertical_domain": "Healthcare", "cost_profile": "cheap",
+                                           "cycle_time_ms": "1", "made_up_field": 3})
+    state = ExtractNode(make_ctx(llm=llm))({"intent": "x", "class_id": "TimeCritical"})["dialogue"]
+    assert "vertical_domain" not in state.satisfied and "cost_profile" not in state.satisfied
+    assert "made_up_field" not in state.satisfied
+    assert state.satisfied["cycle_time_ms"].value == 1.0                   # coerced to float
+    assert {"vertical_domain", "cost_profile"} <= set(state.missing)        # will be asked
+
+
+def test_extract_keeps_values_named_by_conflict_rules(make_ctx):
+    """GEO isn't a TimeCritical ntn_tier option, but dropping it would hide GEO+Critical."""
+    llm = ScriptedLanguageModel(extracted={"ntn_tier": "GEO"})
+    state = ExtractNode(make_ctx(llm=llm))({"intent": "x", "class_id": "TimeCritical"})["dialogue"]
+    assert state.satisfied["ntn_tier"].value == "GEO"
+
+
 def test_extract_disabled_skips_the_llm(make_ctx):
     llm = ScriptedLanguageModel(extracted={"cost_profile": "Premium"})
     state = ExtractNode(make_ctx(llm=llm), use_llm=False)({"intent": "x", "class_id": "TimeCritical"})["dialogue"]
@@ -108,13 +125,26 @@ def test_ask_slot_records_the_parsed_answer(make_ctx, make_state):
     assert out["history"][-1] == {"role": "user", "content": "Premium please"}
 
 
-def test_ask_slot_drops_unparseable_answers(make_ctx, make_state):
-    class Unparseable(ScriptedLanguageModel):
+@pytest.mark.parametrize("bad", [None, "Maritime", ""])
+def test_ask_slot_retries_once_then_gives_up(make_ctx, make_state, bad):
+    class Unusable(ScriptedLanguageModel):
         def parse_answer(self, slot, answer):
-            return {"value": None}
+            return {"value": bad}
     state = make_state(missing=["cost_profile"])
-    AskSlotNode(make_ctx(llm=Unparseable()))({"dialogue": state, "history": [], "action": "ask_slot"})
-    assert state.missing == [] and "cost_profile" not in state.satisfied
+    node = AskSlotNode(make_ctx(llm=Unusable()))
+    node({"dialogue": state, "history": [], "action": "ask_slot"})
+    assert state.missing == ["cost_profile"] and state.attempts["cost_profile"] == 1   # ask again
+    node({"dialogue": state, "history": [], "action": "ask_slot"})
+    assert state.missing == [] and "cost_profile" not in state.satisfied             # give up
+
+
+def test_ask_slot_normalises_valid_answers(make_ctx, make_state):
+    class Lowercase(ScriptedLanguageModel):
+        def parse_answer(self, slot, answer):
+            return {"value": "premium"}
+    state = make_state(missing=["cost_profile"])
+    AskSlotNode(make_ctx(llm=Lowercase()))({"dialogue": state, "history": [], "action": "ask_slot"})
+    assert state.satisfied["cost_profile"].value == "Premium"
 
 
 def test_ask_slot_skips_unknown_slots_without_asking(make_ctx, make_state):
