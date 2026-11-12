@@ -197,7 +197,7 @@ The default model is `llama3.1:8b`. The paper's numbers were produced with
 Llama-3-8B-Instruct (4-bit); to reproduce them, pull it and pass
 `--model llama3:8b-instruct-q4_K_M`. Global options: `--model <ollama tag>`,
 `--ollama-url`, `--results-dir` (env: `OLLAMA_MODEL`, `OLLAMA_HOST`,
-`INTENT_AGENT_RESULTS`). `python -m intent_agent` works too.
+`INTENT_AGENT_RESULTS`). `python -m cli` works too.
 
 **Interactive shell** — `intent-agent` opens a chat-style terminal app. Type a
 service request in plain English; the agent streams each stage (class, extracted
@@ -257,16 +257,18 @@ intent-agent bench generate --class TC --type paraphrased --n 3   # grow the dat
 ## Architecture
 
 ```
-src/intent_agent/
+src/
 ├── models/        Plain dataclasses — ontology schema, dialogue state, ServiceIntent
 ├── core/          Domain logic. Depends only on models and on its own ports
 │   ├── ports.py         LanguageModel · UserChannel · ConflictDetector interfaces
 │   ├── knowledge/       The knowledge graph
 │   │   ├── catalog/       Ontology data: one file per service class, paper tables, universal rules
 │   │   ├── graph.py       KnowledgeGraph queries (slots, conditionals, termination, deploy mode)
-│   │   └── conflicts.py   KG / partial-KG / null conflict detectors
+│   │   ├── conflicts.py   KG / partial-KG / null conflict detectors
+│   │   ├── values.py      Allowed values per slot + validation of parsed answers
+│   │   └── conditions.py  Condition operators for conditional and escalation edges
 │   └── pipeline/        The LangGraph pipeline
-│       ├── nodes/         One node per file: classify, extract, kg_check, ask_slot, …
+│       ├── nodes/         One node per file: classify, extract, kg_check, ask_slot, resolve_conflict, …
 │       ├── graph.py       Wiring of the pipeline and the clarification loop
 │       └── runner.py      IntentPipeline facade (run / stream / mermaid)
 ├── adapters/      Implementations of the ports
@@ -285,7 +287,8 @@ src/intent_agent/
     └── shell/           Interactive shell: app, user channels, completer, slash commands
 tests/
 ├── unit/          Per layer: models, core (nodes, graph, KG, detectors), adapters, eval, cli
-└── integration/   End to end: real LangChain stack with a fake chat model; CLI; live Ollama
+├── integration/   End to end: real LangChain stack with a fake chat model; CLI; live Ollama
+└── support/       Test doubles (a LangChain chat model that answers by prompt type)
 ```
 
 Dependencies point one way: `cli`/`eval` → `bootstrap` → `adapters` → `core` →
@@ -308,7 +311,7 @@ passes 400 lines.
 **Run the tests**
 
 ```bash
-pytest                    # 291 tests: unit + end-to-end (live Ollama tests skip if unavailable)
+pytest                    # 290 tests: unit + end-to-end (live Ollama tests skip if unavailable)
 pytest tests/unit         # fast, no model
 pytest -m ollama          # only the tests against a real Ollama server
 ```
@@ -317,7 +320,7 @@ pytest -m ollama          # only the tests against a real Ollama server
 
 ## Dataset & evaluation design
 
-The benchmark lives in `src/intent_agent/eval/dataset/data/` — one JSON file per
+The benchmark lives in `src/eval/dataset/data/` — one JSON file per
 request type — and has **200 intents, 50 per service class, split evenly
 between well-formed and adversarial requests**:
 
@@ -333,7 +336,7 @@ The 60 contradictory intents cover all ten conflict rules in the graph (five
 universal, five class-specific) and span all four deployment scenarios (Urban,
 RuralRemote, Disaster, Maritime).
 
-| Collection (`intent_agent.eval.dataset`) | Size | Purpose |
+| Collection (`eval.dataset`) | Size | Purpose |
 |---|:--:|---|
 | `ALL_SAMPLES` | 200 | Full benchmark — `bench eval`, `bench ablation` |
 | `WELL_FORMED` / `ADVERSARIAL` | 100 / 100 | Seed + paraphrased / ambiguous + contradictory |

@@ -7,10 +7,10 @@ configured model (OLLAMA_MODEL, default llama3.1:8b) is pulled.
 
 import pytest
 
-from intent_agent.adapters.llm.ollama import ModelUnavailableError
-from intent_agent.bootstrap import create_language_model, simulated_pipeline
-from intent_agent.config import Settings
-from intent_agent.eval.dataset import get_sample
+from adapters.llm.ollama import ModelUnavailableError
+from bootstrap import create_language_model, simulated_pipeline
+from config import Settings
+from eval.dataset import get_sample
 
 pytestmark = pytest.mark.ollama
 

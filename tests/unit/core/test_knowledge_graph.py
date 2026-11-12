@@ -1,6 +1,6 @@
 import pytest
 
-from intent_agent.models.dialogue import ConflictFlag, SlotValue
+from models.dialogue import ConflictFlag, SlotValue
 
 
 def test_four_service_classes(kg):

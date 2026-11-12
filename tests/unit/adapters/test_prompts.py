@@ -1,7 +1,7 @@
 """Prompt templates render with their variables (and literal JSON braces survive)."""
 
-from intent_agent.adapters.llm import prompts
-from intent_agent.models.ontology import RequiresParameter
+from adapters.llm import prompts
+from models.ontology import RequiresParameter
 
 SLOT = RequiresParameter(field="cost_profile", dtype="enum", question="Which cost profile?",
                          enum_values=["LowCost", "Balanced", "Premium"])

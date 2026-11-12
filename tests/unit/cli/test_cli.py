@@ -4,8 +4,8 @@ import json
 
 import pytest
 
-from intent_agent.cli.main import build_parser, main
-from intent_agent.config import Settings
+from cli.main import build_parser, main
+from config import Settings
 
 
 def test_global_options_build_settings(monkeypatch):
@@ -59,7 +59,7 @@ def test_run_rejects_unknown_ids():
 
 def test_shell_slash_commands_without_model(monkeypatch, capsys):
     pytest.importorskip("prompt_toolkit")
-    from intent_agent.cli.shell.commands import COMMANDS, EXIT, _filters
+    from cli.shell.commands import COMMANDS, EXIT, _filters
     assert _filters(["RC", "ambiguous", "adversarial"]) == {
         "cls": "RemoteConnectivity", "rtype": "ambiguous", "adversarial": True}
     assert COMMANDS["/exit"].handler(None, []) is EXIT

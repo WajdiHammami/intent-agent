@@ -4,8 +4,8 @@ import json
 
 import pytest
 
-from intent_agent.adapters.llm.langchain_model import LangChainLanguageModel
-from intent_agent.cli.main import main
+from adapters.llm.langchain_model import LangChainLanguageModel
+from cli.main import main
 from tests.support.fake_chat import factory_for, scenario_responder
 
 
@@ -28,8 +28,8 @@ def fake_model(monkeypatch):
     def install(class_id="MissionCritical", extracted=None):
         llm = FakeOllama(class_id, extracted)
         factory = lambda settings, check=True: llm
-        monkeypatch.setattr("intent_agent.cli.common.create_language_model", factory)
-        monkeypatch.setattr("intent_agent.eval.experiments.common.create_language_model", factory)
+        monkeypatch.setattr("cli.common.create_language_model", factory)
+        monkeypatch.setattr("eval.experiments.common.create_language_model", factory)
         return llm
     return install
 
@@ -85,13 +85,13 @@ def test_bench_sweep_and_pure_llm(fake_model, tmp_path):
 
 def test_shell_replays_a_sample(fake_model, capsys, tmp_path, monkeypatch):
     pytest.importorskip("prompt_toolkit")
-    from intent_agent.cli.shell import app as shell_app
-    from intent_agent.config import Settings
+    from cli.shell import app as shell_app
+    from config import Settings
 
     monkeypatch.setattr(shell_app, "HISTORY_FILE", tmp_path / "history")
     shell = shell_app.Shell(Settings())
     shell.llm, shell.llm_ready = FakeOllama("MissionCritical"), True
-    shell.run_samples([__import__("intent_agent.eval.dataset", fromlist=["get_sample"]).get_sample("SEED-MC-01")])
+    shell.run_samples([__import__("eval.dataset", fromlist=["get_sample"]).get_sample("SEED-MC-01")])
     out = capsys.readouterr().out
     assert "Service class  MissionCritical" in out and "Checks against labels" in out
     assert "(simulated)" in out

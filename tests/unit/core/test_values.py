@@ -1,7 +1,7 @@
 import pytest
 
-from intent_agent.core.knowledge.values import InvalidValue, allowed_values, coerce_value
-from intent_agent.models.ontology import RequiresParameter
+from core.knowledge.values import InvalidValue, allowed_values, coerce_value
+from models.ontology import RequiresParameter
 
 ENUM = RequiresParameter("cost_profile", "enum", "?", enum_values=["LowCost", "Balanced", "Premium"])
 BOOL = RequiresParameter("battery_powered", "bool", "?")

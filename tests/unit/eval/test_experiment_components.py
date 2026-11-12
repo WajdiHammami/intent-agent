@@ -1,15 +1,15 @@
 """Building blocks of the experiments, without running a model."""
 
-from intent_agent.adapters.llm.scripted import ScriptedLanguageModel
-from intent_agent.adapters.users.scripted import ScriptedUser
-from intent_agent.core.knowledge import KGConflictDetector, NullConflictDetector
-from intent_agent.core.pipeline import IntentPipeline
-from intent_agent.eval.dataset import get_sample
-from intent_agent.eval.experiments.ablation.llm_conflicts import LLMConflictDetector
-from intent_agent.eval.experiments.ablation.variants import VARIANTS
-from intent_agent.eval.experiments.generate.builder import build_sample, next_id
-from intent_agent.eval.experiments.pure_llm.nodes import NODE_OVERRIDES
-from intent_agent.models.dialogue import SlotValue
+from adapters.llm.scripted import ScriptedLanguageModel
+from adapters.users.scripted import ScriptedUser
+from core.knowledge import KGConflictDetector, NullConflictDetector
+from core.pipeline import IntentPipeline
+from eval.dataset import get_sample
+from eval.experiments.ablation.llm_conflicts import LLMConflictDetector
+from eval.experiments.ablation.variants import VARIANTS
+from eval.experiments.generate.builder import build_sample, next_id
+from eval.experiments.pure_llm.nodes import NODE_OVERRIDES
+from models.dialogue import SlotValue
 
 
 class JsonModel(ScriptedLanguageModel):

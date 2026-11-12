@@ -1,7 +1,7 @@
 import pytest
 
-from intent_agent.core.knowledge import KGConflictDetector, NullConflictDetector
-from intent_agent.models.dialogue import SlotValue
+from core.knowledge import KGConflictDetector, NullConflictDetector
+from models.dialogue import SlotValue
 
 
 def _sat(**values):

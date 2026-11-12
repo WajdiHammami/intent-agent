@@ -4,8 +4,8 @@ import json
 
 import pytest
 
-from intent_agent.adapters.llm.langchain_model import LangChainLanguageModel, cast_value, to_messages
-from intent_agent.models.ontology import RequiresParameter
+from adapters.llm.langchain_model import LangChainLanguageModel, cast_value, to_messages
+from models.ontology import RequiresParameter
 from tests.support.fake_chat import factory_for, scenario_responder
 
 

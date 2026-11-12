@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-PKG = Path(__file__).resolve().parents[2] / "src" / "intent_agent"
+PKG = Path(__file__).resolve().parents[2] / "src"
 
 
 def _imports(path: Path) -> set[str]:
@@ -30,12 +30,11 @@ def _layer_imports(layer: str) -> dict[str, set[str]]:
 
 
 FORBIDDEN = {
-    "models": ("intent_agent.core", "intent_agent.adapters", "intent_agent.eval", "intent_agent.cli",
-               "langchain", "langgraph"),
-    "core": ("intent_agent.adapters", "intent_agent.eval", "intent_agent.cli",
-             "intent_agent.bootstrap", "langchain_ollama", "langchain_core", "ollama"),
-    "adapters": ("intent_agent.eval", "intent_agent.cli", "intent_agent.bootstrap"),
-    "eval": ("intent_agent.cli",),
+    "models": ("core", "adapters", "eval", "cli", "config", "bootstrap", "langchain", "langgraph"),
+    "core": ("adapters", "eval", "cli", "config", "bootstrap",
+             "langchain_ollama", "langchain_core", "ollama"),
+    "adapters": ("eval", "cli", "bootstrap"),
+    "eval": ("cli",),
 }
 
 
@@ -66,7 +65,8 @@ def test_prompts_live_in_their_own_modules():
     assert "You are a" not in model_src, "prompt text belongs in adapters/llm/prompts/"
 
 
-@pytest.mark.parametrize("path", sorted(str(p.relative_to(PKG)) for p in PKG.rglob("*.py")))
+@pytest.mark.parametrize("path", sorted(str(p.relative_to(PKG)) for p in PKG.rglob("*.py")
+                                         if ".egg-info" not in str(p)))
 def test_modules_stay_small(path):
     limit = 400
     assert len((PKG / path).read_text().splitlines()) <= limit, f"{path} is over {limit} lines"

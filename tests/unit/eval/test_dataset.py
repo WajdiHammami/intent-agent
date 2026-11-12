@@ -3,7 +3,7 @@ from collections import Counter
 
 import pytest
 
-from intent_agent.eval.dataset import (
+from eval.dataset import (
     ADVERSARIAL,
     ALL_SAMPLES,
     CONTRADICTORY_SUBSET,

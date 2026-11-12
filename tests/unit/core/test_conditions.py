@@ -1,6 +1,6 @@
 import pytest
 
-from intent_agent.core.knowledge.conditions import evaluate_condition
+from core.knowledge.conditions import evaluate_condition
 
 
 @pytest.mark.parametrize("op, value, target, expected", [

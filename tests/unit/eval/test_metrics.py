@@ -1,11 +1,11 @@
 import pytest
 
-from intent_agent.adapters.llm.scripted import ScriptedLanguageModel
-from intent_agent.adapters.users.scripted import ScriptedUser
-from intent_agent.core.pipeline import IntentPipeline
-from intent_agent.eval.checks import label_checks
-from intent_agent.eval.dataset import get_sample
-from intent_agent.eval.metrics import aggregate, evaluate_sample, print_metric_matrix, print_results_table
+from adapters.llm.scripted import ScriptedLanguageModel
+from adapters.users.scripted import ScriptedUser
+from core.pipeline import IntentPipeline
+from eval.checks import label_checks
+from eval.dataset import get_sample
+from eval.metrics import aggregate, evaluate_sample, print_metric_matrix, print_results_table
 
 
 def _run(sample_id, class_id=None, extracted=None):

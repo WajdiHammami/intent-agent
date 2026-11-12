@@ -2,10 +2,10 @@
 
 import pytest
 
-from intent_agent.adapters.llm.scripted import ScriptedLanguageModel
-from intent_agent.adapters.users.scripted import ScriptedUser
-from intent_agent.core.knowledge import NullConflictDetector
-from intent_agent.core.pipeline.nodes import (
+from adapters.llm.scripted import ScriptedLanguageModel
+from adapters.users.scripted import ScriptedUser
+from core.knowledge import NullConflictDetector
+from core.pipeline.nodes import (
     AskSlotNode,
     AssembleNode,
     ClassifyNode,
@@ -13,7 +13,7 @@ from intent_agent.core.pipeline.nodes import (
     KGCheckNode,
     ResolveConflictNode,
 )
-from intent_agent.models.dialogue import ConflictFlag
+from models.dialogue import ConflictFlag
 
 
 class _Classifier(ScriptedLanguageModel):

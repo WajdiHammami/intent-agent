@@ -1,8 +1,8 @@
-from intent_agent.adapters.llm.scripted import ScriptedLanguageModel, first_valid_value
-from intent_agent.adapters.users import ScriptedUser, SimulatedUser
-from intent_agent.core.ports import LanguageModel, UserChannel, UserSimulationModel
-from intent_agent.models.dialogue import Question
-from intent_agent.models.ontology import RequiresParameter
+from adapters.llm.scripted import ScriptedLanguageModel, first_valid_value
+from adapters.users import ScriptedUser, SimulatedUser
+from core.ports import LanguageModel, UserChannel, UserSimulationModel
+from models.dialogue import Question
+from models.ontology import RequiresParameter
 
 
 def test_adapters_satisfy_the_ports():

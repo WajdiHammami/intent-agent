@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import pytest
 
-from intent_agent.adapters.llm.scripted import ScriptedLanguageModel
-from intent_agent.adapters.users.scripted import ScriptedUser
-from intent_agent.core.knowledge import KGConflictDetector, KnowledgeGraph
-from intent_agent.core.pipeline.context import PipelineContext
-from intent_agent.models.dialogue import DialogueState, SingleClass, SlotValue
+from adapters.llm.scripted import ScriptedLanguageModel
+from adapters.users.scripted import ScriptedUser
+from core.knowledge import KGConflictDetector, KnowledgeGraph
+from core.pipeline.context import PipelineContext
+from models.dialogue import DialogueState, SingleClass, SlotValue
 
 
 @pytest.fixture(scope="session")

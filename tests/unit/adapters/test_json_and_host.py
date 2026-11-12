@@ -1,7 +1,7 @@
 import pytest
 
-from intent_agent.adapters.llm.host import normalize_host
-from intent_agent.adapters.llm.json_parsing import extract_json
+from adapters.llm.host import normalize_host
+from adapters.llm.json_parsing import extract_json
 
 
 @pytest.mark.parametrize("text, expected", [

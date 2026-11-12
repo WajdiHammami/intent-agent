@@ -2,10 +2,10 @@
 
 import pytest
 
-from intent_agent.adapters.llm.scripted import ScriptedLanguageModel
-from intent_agent.adapters.users.scripted import ScriptedUser
-from intent_agent.core.pipeline import IntentPipeline
-from intent_agent.core.pipeline.graph import PIPELINE_ORDER, build_elicitation_graph
+from adapters.llm.scripted import ScriptedLanguageModel
+from adapters.users.scripted import ScriptedUser
+from core.pipeline import IntentPipeline
+from core.pipeline.graph import PIPELINE_ORDER, build_elicitation_graph
 
 
 def _pipeline(**kw):
@@ -37,7 +37,7 @@ def test_run_produces_a_complete_profile():
 
 def test_node_overrides_replace_a_stage():
     def fixed_assemble(ctx):
-        from intent_agent.core.pipeline.nodes import AssembleNode
+        from core.pipeline.nodes import AssembleNode
         inner = AssembleNode(ctx)
         def node(s):
             s["dialogue"].satisfied.pop("deployment_scenario", None)

@@ -1,10 +1,10 @@
 """Conflict resolution: offer only valid changes, apply only valid answers, never fake a fix."""
 
-from intent_agent.adapters.llm.scripted import ScriptedLanguageModel
-from intent_agent.adapters.users.scripted import ScriptedUser
-from intent_agent.core.pipeline import IntentPipeline
-from intent_agent.core.pipeline.nodes import KGCheckNode, ResolveConflictNode
-from intent_agent.models.dialogue import ConflictFlag
+from adapters.llm.scripted import ScriptedLanguageModel
+from adapters.users.scripted import ScriptedUser
+from core.pipeline import IntentPipeline
+from core.pipeline.nodes import KGCheckNode, ResolveConflictNode
+from models.dialogue import ConflictFlag
 
 
 class Resolver(ScriptedLanguageModel):

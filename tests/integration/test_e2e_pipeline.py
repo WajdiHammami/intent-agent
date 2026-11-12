@@ -6,11 +6,11 @@ the chat model faked, so it runs without Ollama.
 
 import pytest
 
-from intent_agent.adapters.llm.langchain_model import LangChainLanguageModel
-from intent_agent.bootstrap import simulated_pipeline
-from intent_agent.eval.checks import label_checks
-from intent_agent.eval.dataset import ALL_SAMPLES, get_sample
-from intent_agent.eval.metrics import aggregate, evaluate_sample
+from adapters.llm.langchain_model import LangChainLanguageModel
+from bootstrap import simulated_pipeline
+from eval.checks import label_checks
+from eval.dataset import ALL_SAMPLES, get_sample
+from eval.metrics import aggregate, evaluate_sample
 from tests.support.fake_chat import factory_for, scenario_responder
 
 
